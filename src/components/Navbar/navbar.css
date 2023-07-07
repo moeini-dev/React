@@ -1,0 +1,35 @@
+.top {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4em;
+    background-color: white;
+    border-bottom: 1px solid rgb(240, 240, 240);
+    padding: 1vw 5vw 0 5vw;
+    z-index: 99;
+}
+
+.topContainer {
+    height: 5em;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-right: 40px;
+}
+
+.bottom {
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    justify-content: space-between;
+    height: 3em;
+    background-color: white;
+    padding: 0 5vw 1vw 5vw;
+}
+

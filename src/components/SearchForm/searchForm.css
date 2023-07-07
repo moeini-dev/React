@@ -1,0 +1,74 @@
+.searchBox {
+    display: flex;
+    justify-content: center;
+    flex: 5;
+    height: 40px;
+    justify-content: right;
+}
+
+.optionForm {
+    display: flex;
+    border: none;
+}
+
+.textForm {
+    display: flex;
+    align-items: stretch;
+}
+
+select {
+    padding-left: 7px;
+    padding-right: 5px;
+    border: none;
+    appearance: none;
+    border-right: 1px solid rgb(228, 228, 228);
+    border-radius: 15px 0 0 15px;
+    background-color: rgb(245, 245, 245);
+    color: rgb(140, 140, 140);
+    font-size: 14px;
+}
+
+select:focus {
+    outline: none;
+}
+
+option{
+    color: black;
+}
+
+button {
+    display: flex;
+    padding: 7px;
+    align-items: center;
+    justify-content: right;
+    border: none;
+    border-radius: 0 15px 15px 0;
+    background-color: rgb(245, 245, 245);
+    cursor: pointer;
+}
+
+svg {
+    width: 1.5em;
+    height: 100%;
+    fill: rgb(175, 175, 175);
+}
+
+.searchText {
+    display: flex;
+    font-size: 16px;
+    font-weight: bold;
+    padding-left: 5px;
+    width: 45vw;
+    border: none;
+    background-color: rgb(245, 245, 245);
+    color: rgb(128, 128, 128)
+}
+
+.searchText:focus {
+    outline: none;
+}
+
+.searchText::placeholder {
+    color: rgb(167, 167, 167);
+    font-weight: normal;
+}
