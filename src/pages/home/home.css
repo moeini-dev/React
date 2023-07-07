@@ -5,5 +5,6 @@
 }
 
 .wrapper {
-    padding: 1vw 5vw 1vw 5vw;
+    width: 100%;
+    padding: 2vw 10vw 2vw 10vw;
 }
