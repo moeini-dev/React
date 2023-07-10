@@ -1,3 +1,5 @@
+import './item.css';
+
 export function Item(props) {
     return (
         <a href={props.link}>
