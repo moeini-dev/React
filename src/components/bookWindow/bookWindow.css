@@ -1,0 +1,93 @@
+.windowContainer {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    background-color: lightblue;
+    /* padding: 1vw 1vw 1vw 1vw; */
+    margin: 5vw 10vw 0 10vw;
+}
+
+.windowTitle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1vw;
+}
+
+.windowItems {
+    display: flex;
+    margin: 0 1vw 0 1vw;
+    gap: 15px;
+}
+
+.windowItem {
+    /* display: flex; */
+    margin-right: 40px;
+}
+
+.title {
+    display: flex;
+    font-size: 22px;
+    font-weight: bold;
+    color: rgb(66, 66, 66);
+}
+
+.seeAll {
+    display: flex;
+    align-items: center;
+}
+
+.text {
+    font-size: 20px;
+    margin-right: 5px;
+    color: rgb(66, 66, 66);
+    transition: 0.25s ease;
+}
+
+.text:hover {
+    color: rgb(0, 122, 116);
+    transition: 0.25s ease;   
+}
+
+.windowRightArrow {
+    font-size: 14px;
+    fill: rgb(0, 122, 116);
+    transition: 0.25s ease;
+}
+
+.arrowLeft{
+    display: flex;
+    width: fit-content;
+    position: absolute;
+    top: 150px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 0 15px 15px 0;
+    transition: 0.5 ease;
+}
+
+.arrowLeft:hover {
+    background-color: white;
+    transition: 0.5 ease;
+}
+
+.arrowRight{
+    display: flex;
+    width: fit-content;
+    position: absolute;
+    top: 150px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 0 15px 15px 0;
+    transition: 0.5 ease;
+}
+
+.arrowRight:hover {
+    background-color: white;
+    transition: 0.5 ease;
+}
+
+.arrowLeftIcon {
+    font-size: 30px;
+    fill: rgb(66, 66, 66);
+}
