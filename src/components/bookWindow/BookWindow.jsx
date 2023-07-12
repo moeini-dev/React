@@ -26,9 +26,6 @@ export function BookWindow() {
     }
   }
 
-
-  // listRef.current.style.transform = `translateX(${(0)}px)`;
-  // console.log(listRef.current.getBoundingClientRect().x);
   return (
     <div className="windowContainer">
       <div className="windowTitle">
