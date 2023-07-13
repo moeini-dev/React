@@ -4,12 +4,18 @@ import { useRef } from 'react';
 
 export function Register() {
 
-  const username = useRef();
-  const password = useRef();
-  const email = useRef();
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+  const emailRef = useRef();
+
+  let userProfileData = {};
 
   function handleSignUp() {
-    console.log("Hey");
+    userProfileData = {
+      username: usernameRef.current.value,
+      password: passwordRef.current.value,
+      email: emailRef.current.value
+    }
   }
 
   return (
@@ -20,9 +26,9 @@ export function Register() {
       <div className="registerMain">
         <div className="registerContainer">
           <form className="registerForm">
-            <input type="text" name="username" placeholder="Username" ref={username} />
-            <input type="password" name="password" placeholder="Password" ref={password} />
-            <input type="text" name="email" placeholder="Email" ref={email} />
+            <input type="text" name="username" placeholder="Username" ref={usernameRef} />
+            <input type="password" name="password" placeholder="Password" ref={passwordRef} />
+            <input type="text" name="email" placeholder="Email" ref={emailRef} />
             <button type="submit" name="submit" className="registerButton" onClick={handleSignUp}>SignUp</button>
           </form>
         </div>
