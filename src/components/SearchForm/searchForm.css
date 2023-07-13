@@ -36,7 +36,7 @@ option{
     color: black;
 }
 
-button {
+.searchFormButton {
     display: flex;
     padding: 7px;
     align-items: center;
