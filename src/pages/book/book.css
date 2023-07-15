@@ -1,0 +1,125 @@
+.book {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(248,248,248);
+    height: 3000px;
+}
+
+.bookTop {
+    display: flex;
+    flex-direction: column;
+}
+
+.bookMain {
+    display: flex;
+    flex-direction: column;
+    margin: 1vw 10vw 0 10vw;
+    border: 1px solid yellow;
+}
+
+.bookHeader {
+    display: flex;
+    justify-content: space-between;
+    /* border: 1px solid red; */
+}
+
+.bookHeader {
+    display: flex;
+    /* border: 1px solid purple;  */
+}
+
+.bookHeaderLeft {
+    position: relative;
+    display: flex;
+    border: 1px solid green;
+}
+
+.bookHeaderRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: space-between; */
+    border: 1px solid orange;
+    background-color: white;
+    width: 305px;
+    height: 305px;
+}
+
+.price {
+    display: flex;
+    font-size: 24px;
+    height: fit-content;
+    margin-top: 2vw;
+}
+
+.goodreads {
+    display: flex;
+    margin-top: 2vw;
+    font-size: 18px;
+    font-weight: 100;
+    background-color: white;
+    border: 1px solid rgb(197, 197, 197);
+    border-radius: 10px;
+    padding: 5px 15px;
+    margin-top: 8vw;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.goodreads:hover {
+    transition: 0.5s ease;
+    border: 1px solid rgb(130, 233, 251);
+}
+
+.addToCart {
+    display: flex;
+    margin-top: 1.5vw;
+    font-size: 18px;
+    width: fit-content;
+    color: white;
+    background-color: rgb(32, 180, 185);
+    border: none;
+    border-radius: 15px;
+    padding: 10px 45px;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.addToCart:hover {
+    background-color: rgb(20, 206, 212);
+    transition: 0.5s ease;
+}
+
+.bookHeaderRightContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 2vw;
+}
+
+.bookDescription {
+    display: flex;
+    /* border: 1px solid blue; */
+}
+
+.bookImage {
+    width: 210px;
+    height: 305px;
+}
+
+.bookHeaderProperties {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 1vw 1vw;
+    gap: 5px;
+}
+
+.bookHeaderProperties > h1 {
+    margin: 0 0 1vw 0;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 1em;
+    overflow: hidden;
+    height: 2em;
+    width: 14em;
+    border: 1px solid blue;
+}
