@@ -14,10 +14,19 @@ export function Book(props) {
               <img src={require(`./../../assets/${props.image}`)} alt="" className="bookImage" />
             </div>
             <div className="bookHeaderProperties">
-              <h1 className="bookTitle">The Old Man And The SeaThe Old Man And The SeaThe Old Man And The Sea</h1>
-              <div className="bookAuthor">Author:</div>
-              <div className="bookTranslator">Translator:</div>
-              <div className="bookPublisher">Publisher:</div>
+              <h1 className="bookTitle">The Old Man And The Sea</h1>
+              <div className="bookProperties">
+                <div className="bookPropertyKeys">
+                  <p className="bookAuthorKey">Author:</p>
+                  <p className="bookTranslatorKey">Translator:</p>
+                  <p className="bookPublisherKey">Publisher:</p>
+                </div>
+                <div className="bookPropertyValues">
+                  <p className="bookAuthorValue">Ernest Hemingway</p>
+                  <p className="bookTranslatorValue">Majid Amigh</p>
+                  <p className="bookPublisherValue">Penguain</p>
+                </div>
+              </div>
             </div>
           </div>
           <div className="bookHeaderRight">

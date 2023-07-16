@@ -14,24 +14,20 @@
     display: flex;
     flex-direction: column;
     margin: 1vw 10vw 0 10vw;
-    border: 1px solid yellow;
 }
 
 .bookHeader {
     display: flex;
     justify-content: space-between;
-    /* border: 1px solid red; */
 }
 
 .bookHeader {
     display: flex;
-    /* border: 1px solid purple;  */
 }
 
 .bookHeaderLeft {
     position: relative;
     display: flex;
-    border: 1px solid green;
 }
 
 .bookHeaderRight {
@@ -39,10 +35,12 @@
     flex-direction: column;
     align-items: center;
     /* justify-content: space-between; */
-    border: 1px solid orange;
+    border-radius: 15px;
     background-color: white;
     width: 305px;
     height: 305px;
+    box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.15);
+
 }
 
 .price {
@@ -113,6 +111,10 @@
     gap: 5px;
 }
 
+.bookProperties {
+    display: flex;
+}
+
 .bookHeaderProperties > h1 {
     margin: 0 0 1vw 0;
     font-weight: normal;
@@ -121,5 +123,30 @@
     overflow: hidden;
     height: 2em;
     width: 14em;
-    border: 1px solid blue;
+}
+
+.bookPropertyKeys {
+    display: flex;
+    flex-direction: column;
+}
+
+.bookPropertyValues {
+    display: flex;
+    flex-direction: column;
+    width: 19vw;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left: 1vw;
+}
+
+.bookPropertyKeys > p {
+    padding: 0;
+    margin: 0;
+    color: rgb(68, 68, 68);
+}
+
+.bookPropertyValues > p {
+    padding: 0;
+    margin: 0;
+    color: rgb(68, 68, 68);
 }
