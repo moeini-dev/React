@@ -19,10 +19,7 @@
 .bookHeader {
     display: flex;
     justify-content: space-between;
-}
-
-.bookHeader {
-    display: flex;
+    margin-top: 2vw;
 }
 
 .bookHeaderLeft {
@@ -96,7 +93,21 @@
 
 .bookDescription {
     display: flex;
-    /* border: 1px solid blue; */
+    flex-direction: column;
+    margin-top: 4vw;
+    border: 1px solid blue;
+}
+
+.bookDescriptionHeader {
+    margin-top: 0;
+    font-size: 20px;
+    color: rgb(68, 68, 68);
+}
+
+.bookDescriptionMain {
+    font-size: 18px;
+    color: rgb(60, 60, 60);
+    line-height: 1.75em;
 }
 
 .bookImage {
