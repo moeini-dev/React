@@ -93,13 +93,14 @@
 .bookDescription {
     display: flex;
     flex-direction: column;
+    border-top: 2px solid rgb(240, 240, 240);
     margin-top: 3em;
 }
 
 .bookDescriptionHeader {
-
     font-size: 20px;
     color: rgb(68, 68, 68);
+    margin: 2em 0;
 }
 
 .bookDescriptionMain {
