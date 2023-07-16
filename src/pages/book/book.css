@@ -49,14 +49,13 @@
 
 .goodreads {
     display: flex;
-    margin-top: 2vw;
     font-size: 18px;
     font-weight: 100;
     background-color: white;
     border: 1px solid rgb(197, 197, 197);
     border-radius: 10px;
     padding: 5px 15px;
-    margin-top: 8vw;
+    margin-top: 6em;
     cursor: pointer;
     transition: 0.5s ease;
 }
@@ -68,7 +67,7 @@
 
 .addToCart {
     display: flex;
-    margin-top: 1.5vw;
+    margin-top: 1em;
     font-size: 18px;
     width: fit-content;
     color: white;
@@ -94,11 +93,11 @@
 .bookDescription {
     display: flex;
     flex-direction: column;
-    margin-top: 4vw;
+    margin-top: 3em;
 }
 
 .bookDescriptionHeader {
-    margin-top: 0;
+
     font-size: 20px;
     color: rgb(68, 68, 68);
 }
