@@ -1,8 +1,22 @@
 import './featuredBooks.css';
 import './../../index.css';
 import { Item } from './../Item/Item';
+import { useEffect, useState } from 'react';
 
 export function FeaturedBooks() {
+
+  const [featuredBookData, setfeaturedBookData] = useState();
+
+  useEffect(() => {
+    fetch("/api/featuredBooks")
+      .then(res => res.json())
+      .then(data => {
+        setfeaturedBookData(data);
+        console.log(featuredBookData);
+      })
+  }, []);
+
+
   return (
     <div className="container">
       <div className="featuredBooksTitle">
@@ -10,23 +24,29 @@ export function FeaturedBooks() {
         <div className="offPersentage">80% OFF</div>
       </div>
       <div className="itemWrapper">
-        <Item
-          link="google.com"
-          image="the-old-man-and-the-sea2.jpg"
-          name="The old man and the sea"
-          author="Ernest Hemigway" />
+        {(typeof featuredBookData === 'undefined') ? (
+          <div></div>
+        ) : (
+            <>
+              <Item
+                link={featuredBookData.link}
+                image={featuredBookData.image}
+                name={featuredBookData.name}
+                author={featuredBookData.author} />
 
-        <Item
-          link="google.com"
-          image="1984.jpg"
-          name="1984"
-          author="George Orwell" />
+              <Item
+                link="google.com"
+                image="1984.jpg"
+                name="1984"
+                author="George Orwell" />
 
-        <Item
-          link="google.com"
-          image="the-midnight-library.jpg"
-          name="The Midnight Library"
-          author="Matt Haig" />
+              <Item
+                link="google.com"
+                image="the-midnight-library.jpg"
+                name="The Midnight Library"
+                author="Matt Haig" />
+            </>
+          )}
       </div>
     </div>
   );

@@ -8,11 +8,11 @@ import { Book } from './pages/book/Book';
 function App() {
   return (
     <>
-      {/* <Home /> */}
+      <Home />
       {/* <Register /> */}
       {/* <Login /> */}
-      <Book
-        image="the-old-man-and-the-sea2.jpg" />
+      {/* <Book
+        image="the-old-man-and-the-sea2.jpg" /> */}
     </>
   );
 }
