@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     }
-  }, { freezeTableName: true })
+  }, { freezeTableName: true });
+
+  Author.associate = models => {
+    Author.hasMany(models.book)
+  }
   return Author;
 }

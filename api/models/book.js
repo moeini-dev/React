@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DATE
     }
-  }, { freezeTableName: true })
+  }, { freezeTableName: true });
+
+  Book.associate = models => {
+    Book.belongsTo(models.author);
+  }
   return Book;
 }
