@@ -9,5 +9,10 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
     timestamps: false
   })
+
+  Publisher.associate = models => {
+    Publisher.hasMany(models.book);
+  }
+
   return Publisher;
 }
