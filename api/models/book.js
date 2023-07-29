@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
   Book.associate = models => {
     Book.belongsTo(models.author);
     Book.belongsTo(models.publisher);
+    Book.belongsTo(models.translator);
   }
   return Book;
 }
