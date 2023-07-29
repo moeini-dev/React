@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     Book.belongsTo(models.author);
     Book.belongsTo(models.publisher);
     Book.belongsTo(models.translator);
+    Book.hasMany(models.order);
   }
   return Book;
 }
