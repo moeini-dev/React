@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     freezeTableName: true,
     timestamps: false
-  })
+  });
+
+  Translator.associate = models => {
+    Translator.hasMany(models.book);
+  }
   return Translator;
 }
