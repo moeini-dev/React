@@ -17,6 +17,14 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
     timestamps: true,
     updatedAt: false
-  })
+  });
+
+  Order.associate = models => {
+    Order.belongsTo(models.book, {
+      foreignKey: 'bookIsbn',
+      targetKey: 'isbn'
+    })
+  }
+
   return Order;
 }
