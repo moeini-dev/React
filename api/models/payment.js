@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
     timestamps: true,
     updatedAt: false
-  })
+  });
+
+  Payment.associate = models => {
+    Payment.hasOne(models.order);
+  }
+
   return Payment;
 }

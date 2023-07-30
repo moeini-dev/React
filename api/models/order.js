@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     Order.belongsTo(models.book, {
       foreignKey: 'bookIsbn',
       targetKey: 'isbn'
-    })
+    });
+    Order.belongsTo(models.payment);
   }
 
   return Order;
