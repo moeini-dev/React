@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     freezeTableName: true,
     timestamps: false
-  })
+  });
+
+  Genre.associate = models => {
+    Genre.belongsToMany(models.book, { through: 'book_genre', sourceKey: 'id', targetKey: 'isbn' });
+  }
+
   return Genre;
 }
