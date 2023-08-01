@@ -14,7 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
     timestamps: true,
     updatedAt: false
-  })
+  });
+
+  Review.associate = models => {
+    Review.belongsTo(models.user, {
+      foreignKey: 'userUuid',
+      targetKey: 'uuid'
+    });
+  }
+
   return Review;
 }
 
