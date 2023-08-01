@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     Book.belongsTo(models.publisher);
     Book.belongsTo(models.translator);
     Book.hasMany(models.order);
+    Book.belongsToMany(models.user, { through: 'User_Book', sourceKey: 'isbn', targetkey: 'uuid' });
   }
   return Book;
 }

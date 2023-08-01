@@ -75,6 +75,7 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = models => {
     User.hasMany(models.payment);
     User.hasMany(models.review);
+    User.belongsToMany(models.book, { through: 'User_Book', sourceKey: 'uuid', targetkey: 'isbn' });
   }
 
   return User;
