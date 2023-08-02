@@ -68,6 +68,9 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Invalid input: Use 1 for Admin -- 0 for Customer'
         }
       }
+    },
+    refreshToken: {
+      type: DataTypes.STRING(1000)
     }
   },
     { freezeTableName: true });
