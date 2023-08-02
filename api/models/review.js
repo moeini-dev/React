@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userUuid',
       targetKey: 'uuid'
     });
+    Review.belongsTo(models.book, {
+      foreignKey: 'bookIsbn',
+      targetKey: 'isbn'
+    })
   }
 
   return Review;
