@@ -16,6 +16,10 @@ module.exports = {
           isIn: [['completed', 'pending', 'cancled']]
         }
       },
+      amount: {
+        type: DataTypes.FLOAT(5, 2),
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
