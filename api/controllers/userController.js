@@ -11,7 +11,7 @@ const getUsers = async (req, res) => {
     }))
     .catch(err => res.status(500).json({
       success: 0,
-      error: 'Sorry! Something went wrong'
+      msg: 'Sorry! Something went wrong'
     }))
 }
 
@@ -27,14 +27,14 @@ const getUserByUuid = async (req, res) => {
       } else {
         res.status(400).json({
           success: 0,
-          error: 'There is no such user'
+          msg: 'There is no such user'
         })
       }
     })
     .catch(err => {
       res.status(500).json({
         success: 0,
-        error: 'Sorry! Something went wrong'
+        msg: 'Sorry! Something went wrong'
       })
     })
 }
@@ -49,7 +49,7 @@ const createUser = async (req, res) => {
     .then(result => {
       res.status(200).json({
         success: 1,
-        result: 'User registerd successfully'
+        msg: 'User registerd successfully'
       })
     })
     .catch(err => {
@@ -61,12 +61,54 @@ const createUser = async (req, res) => {
       } else {
         res.status(500).json({
           success: 0,
-          error: 'Sorry! Something went wrong'
+          msg: 'Sorry! Something went wrong'
         })
       }
     })
 }
 
+
+const hashPassword = async (password) => {
+  const hashedPass = await bcrypt.hash(password, 10);
+  return hashedPass;
+}
+
+
+const editUser = async (req, res) => {
+  let { username, password } = req.body;
+
+  if (username && password) {
+    try {
+      password = await hashPassword(password);
+    } catch {
+      res.status(500).json({
+        success: 0,
+        msg: 'Sorry! Something went wrong'
+      })
+    }
+
+    await db.user.update({ username, password }, {
+      where: { uuid: req.params.uuid }
+    })
+      .then(() => {
+        res.status(200).json({
+          success: 1,
+          msg: 'User updated successfully'
+        })
+      })
+      .catch(() => {
+        res.status(500).json({
+          success: 0,
+          msg: 'Sorry! Something went wrong'
+        })
+      })
+  } else {
+    res.status(400).json({
+      success: 0,
+      msg: 'Bad request'
+    })
+  }
+}
 
 
 module.exports = {
