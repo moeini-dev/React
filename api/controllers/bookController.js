@@ -166,7 +166,6 @@ const getBooksByTranslator = async (req, res) => {
 }
 
 
-
 //Just to handle repetitive work and to stop repeating myself
 
 const getAssociatedBook = (res, results, person) => {
@@ -195,9 +194,270 @@ const getAssociatedBook = (res, results, person) => {
 }
 
 
+const deleteBook = async (req, res) => {
+  await db.book.destroy({ where: { isbn: req.params.isbn } })
+    .then(results => {
+      if (results !== 0) {
+        res.status(200).json({
+          success: 1,
+          msg: 'Book deleted successfully'
+        })
+      } else {
+        res.status(400).json({
+          success: 0,
+          msg: 'There is no such book to delete'
+        })
+      }
+    })
+    .catch(err => res.status(500).json({
+      success: 0,
+      msg: 'Sorry! Something went wrong'
+    }))
+}
 
+
+
+
+
+const addBook = async (req, res) => {
+  const {
+    isbn,
+    title,
+    price,
+    publicationYear,
+    authorName,
+    publisherName,
+    translatorName
+  } = req.body;
+
+  if (isbn == (undefined || null) || title == (undefined || null) || price == (undefined || null)) {
+    return res.status(500).json({
+      success: 0,
+      msg: 'Isbn, title, and price are required'
+    });
+  }
+  else {
+
+    //This part needs to get refactored.
+    //All of this indented ifs should turn to .then() chain I think
+
+    const authorId = await checkAuthor(res, authorName);
+    if (authorId !== undefined) {
+      const publisherId = await checkPublisher(res, publisherName);
+      if (publisherId !== undefined) {
+        if (translatorName) {
+          const translatorId = await checkTranslator(res, translatorName)
+
+          if (translatorId !== undefined) {
+            await db.book.create({
+              isbn,
+              title,
+              price,
+              publicationYear,
+              authorId,
+              publisherId,
+              translatorId
+            })
+              .then(result => res.status(200).json({
+                success: 1,
+                msg: `Book ${title} added successfully`
+              }))
+              .catch(err => {
+                if (err.name == 'SequelizeUniqueConstraintError') {
+                  res.status(200).json({
+                    success: 0,
+                    msg: `There is already a book with the same ISBN : ${isbn} Check if you entered ISBN correctly or maybe it has been added before`
+                  })
+                } else {
+                  res.status(200).json({
+                    success: 0,
+                    msg: `Sorry! Something went wrong`
+                  })
+                }
+              })
+          } else { return }
+        }
+        else {
+
+          //Without translatorId
+          await db.book.create({
+            isbn,
+            title,
+            price,
+            publicationYear,
+            authorId,
+            publisherId
+          })
+            .then(result => res.status(200).json({
+              success: 1,
+              msg: `Book ${title} added successfully`
+            }))
+            .catch(err => {
+              if (err.name == 'SequelizeUniqueConstraintError') {
+                res.status(200).json({
+                  success: 0,
+                  msg: `There is already a book with the same ISBN : ${isbn} Check if you entered ISBN correctly or maybe it has been added before`
+                })
+              } else {
+                res.status(200).json({
+                  success: 0,
+                  msg: `Sorry! Something went wrong`
+                })
+              }
+            })
+        }
+      } else { return }
+    } else { return }
+  }
+}
+
+
+
+const checkTranslator = async (res, translatorName) => {
+  if (translatorName && typeof translatorName === 'string') {
+    const [translatorFirstName, translatorLastName] = translatorName.split(' ');
+    if (translatorFirstName, translatorLastName) {
+
+      //In case of success, 'results' should be an integer representing the translatorId
+      const results = await findOrCreateTranslatorId(translatorFirstName, translatorLastName);
+
+      //In case any error occures, the final result would be an object instead of a number
+      if (typeof results !== 'number') {
+        res.status(500).json({
+          success: 0,
+          msg: 'Something went wrong with the database'
+        })
+      } else { return results }
+    } else {
+      res.status(400).json({
+        success: 0,
+        msg: 'Enter the full name of the translator'
+      })
+    }
+  } else {
+    res.status(400).json({
+      success: 0,
+      msg: 'translator name should be a string'
+    })
+  }
+}
+
+
+const findOrCreateTranslatorId = async (translatorFirstName, translatorLastName) => {
+  try {
+    const results = await db.translator.findOrCreate(
+      {
+        attributes: ['id'],
+        where: {
+          [Op.and]: [
+            { firstName: translatorFirstName },
+            { lastName: translatorLastName }
+          ]
+        },
+        defaults: {
+          firstName: translatorFirstName,
+          lastName: translatorLastName
+        }
+      })
+    return results[0]['dataValues']['id'];
+  } catch (err) {
+    { return err }
+  }
+}
+
+
+
+const checkPublisher = async (res, publisherName) => {
+  if (publisherName && typeof publisherName === 'string') {
+    const result = await findOrCreatePublisherId(publisherName);
+
+    if (typeof result !== 'number') {
+      res.status(500).json({
+        success: 0,
+        msg: 'Something went wrong with the database'
+      })
+    } else { return result }
+  } else {
+    res.status(400).json({
+      success: 0,
+      msg: 'Publisher name should be a string'
+    })
+  }
+}
+
+
+
+const findOrCreatePublisherId = async (publisherName) => {
+  try {
+    const result = await db.publisher.findOrCreate({
+      attributes: ['id'],
+      where: {
+        name: publisherName
+      }
+    })
+    return result[0]['dataValues']['id'];
+  } catch (err) { return err }
+}
+
+
+
+
+const checkAuthor = async (res, authorName) => {
+  if (authorName && typeof authorName === 'string') {
+    const [authorFirstName, authorLastName] = authorName.split(' ');
+    if (authorFirstName, authorLastName) {
+
+      //In case of success, 'results' should be an integer representing the authorId
+      const results = await findOrCreateAuthorId(authorFirstName, authorLastName);
+
+      //In case any error occures, the final result would be an object instead of a number
+      if (typeof results !== 'number') {
+        res.status(500).json({
+          success: 0,
+          msg: 'Something went wrong with the database'
+        })
+      }
+      else { return results }
+    } else {
+      res.status(400).json({
+        success: 0,
+        msg: 'Enter the full name of the author'
+      })
+    }
+  } else {
+    res.status(400).json({
+      success: 0,
+      msg: 'Author name should be a string'
+    })
+  }
+}
+
+
+const findOrCreateAuthorId = async (authorFirstName, authorLastName) => {
+  try {
+    const results = await db.author.findOrCreate(
+      {
+        attributes: ['id'],
+        where: {
+          [Op.and]: [
+            { firstName: authorFirstName },
+            { lastName: authorLastName }
+          ]
+        },
+        defaults: {
+          firstName: authorFirstName,
+          lastName: authorLastName
+        }
+      })
+    return results[0]['dataValues']['id'];
+  } catch (err) {
+    { return err }
+  }
+}
 
 
 module.exports = {
   getBooks,
+  deleteBook,
+  addBook
 };
