@@ -28,6 +28,39 @@ const getBooks = async (req, res) => {
 }
 
 
+const getOneBook = async (req, res) => {
+  const isbn = req.params.isbn;
+  //!isNaN(req.params.isbn) --> If the isbn string IS a number
+
+  if (isbn && !isNaN(isbn)) {
+    await db.book.findOne({ where: { isbn } })
+      .then(book => {
+        if (book !== null) {
+          res.status(200).json({
+            success: 1,
+            book
+          })
+        } else {
+          res.status(404).json({
+            success: 0,
+            msg: 'There is no such book'
+          })
+        }
+      }
+      )
+      .catch(err => res.status(500).json({
+        success: 0,
+        msg: 'Something went wrong with the database'
+      }))
+  } else {
+    res.status(400).json({
+      success: 0,
+      msg: 'Make sure you entered a valid ISBN in number format'
+    })
+  }
+}
+
+
 const getBooksByTitle = async (req, res) => {
   title = req.query.title;
 
@@ -214,6 +247,18 @@ const deleteBook = async (req, res) => {
       msg: 'Sorry! Something went wrong'
     }))
 }
+
+
+
+const updateBook = async (req, res) => {
+  const [title, price] = req.body;
+
+}
+
+
+
+
+
 
 
 
@@ -458,6 +503,8 @@ const findOrCreateAuthorId = async (authorFirstName, authorLastName) => {
 
 module.exports = {
   getBooks,
+  getOneBook,
   deleteBook,
-  addBook
+  addBook,
+  updateBook
 };
