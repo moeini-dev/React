@@ -1,5 +1,6 @@
 const db = require('../models');
 const { Op } = require('sequelize');
+const axios = require('axios');
 
 const getBooks = async (req, res) => {
   if (req.query.title) {
@@ -27,38 +28,6 @@ const getBooks = async (req, res) => {
   }
 }
 
-
-const getOneBook = async (req, res) => {
-  const isbn = req.params.isbn;
-  //!isNaN(req.params.isbn) --> If the isbn string IS a number
-
-  if (isbn && !isNaN(isbn)) {
-    await db.book.findOne({ where: { isbn } })
-      .then(book => {
-        if (book !== null) {
-          res.status(200).json({
-            success: 1,
-            book
-          })
-        } else {
-          res.status(404).json({
-            success: 0,
-            msg: 'There is no such book'
-          })
-        }
-      }
-      )
-      .catch(err => res.status(500).json({
-        success: 0,
-        msg: 'Something went wrong with the database'
-      }))
-  } else {
-    res.status(400).json({
-      success: 0,
-      msg: 'Make sure you entered a valid ISBN in number format'
-    })
-  }
-}
 
 
 const getBooksByTitle = async (req, res) => {
@@ -249,21 +218,6 @@ const deleteBook = async (req, res) => {
 }
 
 
-
-const updateBook = async (req, res) => {
-  const [title, price] = req.body;
-
-}
-
-
-
-
-
-
-
-
-
-
 const addBook = async (req, res) => {
   const {
     isbn,
@@ -272,7 +226,8 @@ const addBook = async (req, res) => {
     publicationYear,
     authorName,
     publisherName,
-    translatorName
+    translatorName,
+    about
   } = req.body;
 
   if (isbn == (undefined || null) || title == (undefined || null) || price == (undefined || null)) {
@@ -282,9 +237,10 @@ const addBook = async (req, res) => {
     });
   }
   else {
+    const aboutText = (about ? about : 'No description')
 
     //This part needs to get refactored.
-    //All of this indented ifs should turn to .then() chain I think
+    //All of this indented ifs should turn into .then() chain, I think.
 
     const authorId = await checkAuthor(res, authorName);
     if (authorId !== undefined) {
@@ -301,7 +257,8 @@ const addBook = async (req, res) => {
               publicationYear,
               authorId,
               publisherId,
-              translatorId
+              translatorId,
+              about: aboutText
             })
               .then(result => res.status(200).json({
                 success: 1,
@@ -331,7 +288,8 @@ const addBook = async (req, res) => {
             price,
             publicationYear,
             authorId,
-            publisherId
+            publisherId,
+            about: aboutText
           })
             .then(result => res.status(200).json({
               success: 1,
@@ -498,6 +456,63 @@ const findOrCreateAuthorId = async (authorFirstName, authorLastName) => {
   } catch (err) {
     { return err }
   }
+}
+
+
+const getBookByIsbn = async (isbn) => {
+
+  //!isNaN(isbn) --> If the isbn string IS a number
+  if (isbn && !isNaN(isbn)) {
+    const book = await db.book.findOne({ where: { isbn } })
+    if (book !== null) {
+      return { success: 1, status: 200, book }
+    } else {
+      return {
+        success: 0,
+        status: 404,
+        msg: 'There is no such book'
+      }
+    }
+  } else {
+    return {
+      success: 0,
+      status: 400,
+      msg: 'Make sure to provide a valid ISBN in number format'
+    }
+  }
+}
+
+
+
+const getOneBook = async (req, res) => {
+  //!isNaN(req.params.isbn) --> If the isbn string IS a number
+  await getBookByIsbn(req.params.isbn)
+    .then(result => res.status(result.status).json(result))
+    .catch(err => res.status(500).json('Sorry! Something went wrong'))
+}
+
+
+
+const updateBook = async (req, res) => {
+  const {
+    title,
+    price,
+    publicationYear,
+    about
+  } = req.body;
+
+  await db.book.update({
+    title,
+    price,
+    publicationYear,
+    about
+  },
+    { where: { isbn: req.params.isbn } })
+    .then(result => {
+      if (result == 1) return res.status(200).json({ success: 1, msg: 'Updated successfully' })
+      return res.status(500).json({ success: 0, msg: 'Nothing updated. Make sure if this book exists' })
+    })
+    .catch(err => { return res.status(500).json({ success: 0, msg: 'Sorry! Something went wrong' }) })
 }
 
 
