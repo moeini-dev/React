@@ -197,6 +197,7 @@ const getAssociatedBook = (res, results, person) => {
 
 
 const deleteBook = async (req, res) => {
+  if (req.user.isAdmin == false) return res.status(403).json({ success: 0, msg: 'Admin privilege required' })
   await db.book.destroy({ where: { isbn: req.params.isbn } })
     .then(results => {
       if (results !== 0) {
@@ -219,6 +220,7 @@ const deleteBook = async (req, res) => {
 
 
 const addBook = async (req, res) => {
+  if (req.user.isAdmin == false) return res.status(403).json({ success: 0, msg: 'Admin privilege required' })
   const {
     isbn,
     title,
@@ -494,6 +496,7 @@ const getOneBook = async (req, res) => {
 
 
 const updateBook = async (req, res) => {
+  if (req.user.isAdmin == false) return res.status(403).json({ success: 0, msg: 'Admin privilege required' })
   const {
     title,
     price,
