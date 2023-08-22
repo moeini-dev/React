@@ -49,7 +49,7 @@ const generateRefreshToken = async (user) => {
   try {
     const token = jwt.sign(
       { uuid: user.uuid, username: user.username, isAdmin: user.isAdmin },
-      process.env.SECRETKEY);
+      process.env.REFRESHSECRETKEY);
     return token
   } catch{ return undefined }
 }
