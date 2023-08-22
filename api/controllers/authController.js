@@ -15,7 +15,7 @@ const login = async (req, res) => {
 
           if (accessToken && refreshToken) {
             await db.user.update({ refreshToken }, { where: { username } })
-              .then(() => { return res.status(200).json({ success: 1, msg: 'Logged in successfully' }) })
+              .then(() => { return res.status(200).json({ success: 1, msg: 'Logged in successfully', accessToken, refreshToken }) })
           } else { res.status(500).json({ success: 0, msg: 'Sorry! Something went wrong' }) }
 
         } else {
