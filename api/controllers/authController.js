@@ -39,7 +39,7 @@ const generateAccessToken = async (user) => {
     const token = jwt.sign(
       { uuid: user.uuid, username: user.username, isAdmin: user.isAdmin },
       process.env.SECRETKEY,
-      { expiresIn: "20s" });
+      { expiresIn: "60m" });
     return token
   } catch { return undefined }
 }
@@ -56,6 +56,27 @@ const generateRefreshToken = async (user) => {
 
 
 
+const verify = async (req, res, next) => {
+  const authHeader = req.headers.authorization
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, process.env.SECRETKEY, (err, user) => {
+      if (err) {
+        return res.status(403).json({ success: 0, msg: 'Token is invalid' })
+      } else {
+        req.user = user;
+        next();
+      }
+    })
+  } else {
+    return res.status(401).json({ success: 0, msg: 'Not authenticated. You should login first' })
+  }
+}
+
+
+
 module.exports = {
-  login
+  login,
+  verify
 }
