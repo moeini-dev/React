@@ -10,8 +10,8 @@ const login = async (req, res) => {
     await bcrypt.compare(password, user.password)
       .then(async (result) => {
         if (result === true) {
-          const accessToken = await generateAccessToken(user);
-          const refreshToken = await generateRefreshToken(user);
+          const accessToken = generateAccessToken(user);
+          const refreshToken = generateRefreshToken(user);
 
           if (accessToken && refreshToken) {
             await db.user.update({ refreshToken }, { where: { username } })
@@ -34,18 +34,18 @@ const login = async (req, res) => {
 }
 
 
-const generateAccessToken = async (user) => {
+const generateAccessToken = (user) => {
   try {
     const token = jwt.sign(
       { uuid: user.uuid, username: user.username, isAdmin: user.isAdmin },
       process.env.SECRETKEY,
-      { expiresIn: "60m" });
+      { expiresIn: "20m" });
     return token
   } catch { return undefined }
 }
 
 
-const generateRefreshToken = async (user) => {
+const generateRefreshToken = (user) => {
   try {
     const token = jwt.sign(
       { uuid: user.uuid, username: user.username, isAdmin: user.isAdmin },
@@ -75,8 +75,39 @@ const verify = async (req, res, next) => {
 }
 
 
+const refresh = async (req, res) => {
+  const refreshToken = req.body.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(403).json({ success: 0, msg: 'Refresh token not provided' });
+  }
+
+  const result = await db.user.findOne({ where: { refreshToken } });
+  if (!result) return res.status(400).json({ success: 0, msg: 'Refresh token not valid' });
+
+  jwt.verify(refreshToken, process.env.REFRESHSECRETKEY, (err, user) => {
+    if (err) {
+      return res.status(403).json({ success: 0, msg: 'Not authenticated' });
+    }
+    try {
+      const newAccessToken = generateAccessToken(req.user);
+      const newRefreshToken = generateRefreshToken(req.user);
+      db.user.update({ refreshToken: newRefreshToken }, { where: { refreshToken } })
+        .then(() => {
+          return res.status(200).json({
+            success: 1,
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken
+          })
+        })
+    } catch { return res.status(500).json({ success: 0, msg: 'Sorry! Something went wrong' }) }
+  })
+
+}
+
 
 module.exports = {
   login,
-  verify
+  verify,
+  refresh
 }
