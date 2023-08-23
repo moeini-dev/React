@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
-  const user = await db.user.findOne({ where: { username } })
+  const { email, password } = req.body;
+  const user = await db.user.findOne({ where: { email } })
   if (user !== null) {
     await bcrypt.compare(password, user.password)
       .then(async (result) => {
@@ -14,21 +14,21 @@ const login = async (req, res) => {
           const refreshToken = generateRefreshToken(user);
 
           if (accessToken && refreshToken) {
-            await db.user.update({ refreshToken }, { where: { username } })
+            await db.user.update({ refreshToken }, { where: { email } })
               .then(() => { return res.status(200).json({ success: 1, msg: 'Logged in successfully', accessToken, refreshToken }) })
           } else { res.status(500).json({ success: 0, msg: 'Sorry! Something went wrong' }) }
 
         } else {
           return res.status(401).json({
             success: 0,
-            msg: 'Username or password is invalid'
+            msg: 'Email or password is invalid'
           })
         }
       });
   } else {
     return res.status(401).json({
       success: 0,
-      msg: 'Username or password is invalid'
+      msg: 'Email or password is invalid'
     })
   }
 }
