@@ -19,6 +19,17 @@ module.exports = (sequelize, DataTypes) => {
     about: {
       type: DataTypes.TEXT
     },
+    isFeatured: {
+      type: DataTypes.BOOLEAN,
+      allownull: false,
+      defaultValue: 0,
+      validate: {
+        isIn: {
+          args: [[true, false]],
+          msg: 'Invalid input: Use 1 for featured book -- 0 for ordinary book'
+        }
+      }
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
