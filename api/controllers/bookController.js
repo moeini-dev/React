@@ -494,6 +494,13 @@ const getOneBook = async (req, res) => {
 }
 
 
+const getFeaturedBooks = async (req, res) => {
+  await db.book.findAll({ where: { isFeatured: true } })
+    .then(result => res.json(result))
+    .catch(err => res.json({ err: 1, err }))
+}
+
+
 
 const updateBook = async (req, res) => {
   if (req.user.isAdmin == false) return res.status(403).json({ success: 0, msg: 'Admin privilege required' })
@@ -524,5 +531,6 @@ module.exports = {
   getOneBook,
   deleteBook,
   addBook,
-  updateBook
+  updateBook,
+  getFeaturedBooks
 };
