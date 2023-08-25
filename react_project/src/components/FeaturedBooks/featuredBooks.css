@@ -25,6 +25,7 @@
 
 .featuredBooksTitle {
     display: flex;
+    flex-shrink: 0;
     flex-direction: column;
     justify-content: left;
     width: 250px;
@@ -54,4 +55,22 @@
     padding: 10px;
     margin-top: 10px;
     border-radius: 20px 5px 20px 20px;
+}
+
+.arrowRightF{
+    display: flex;
+    width: fit-content;
+    position: absolute;
+    top: 120px;
+    right: 540px;
+    z-index: 99;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 15px 0 0 15px;
+    transition: 0.5s ease;
+}
+
+.arrowRightF:hover {
+    background-color: rgb(248, 248, 248);
+    transition: 0.5s ease;
 }
