@@ -465,7 +465,14 @@ const getBookByIsbn = async (isbn) => {
 
   //!isNaN(isbn) --> If the isbn string IS a number
   if (isbn && !isNaN(isbn)) {
-    const book = await db.book.findOne({ where: { isbn } })
+    const book = await db.book.findOne({
+      where: { isbn },
+      include: [
+        { model: db.author },
+        { model: db.publisher },
+        { model: db.translator },
+        { model: db.genre }]
+    })
     if (book !== null) {
       return { success: 1, status: 200, book }
     } else {
@@ -495,9 +502,9 @@ const getOneBook = async (req, res) => {
 
 
 const getFeaturedBooks = async (req, res) => {
-  await db.book.findAll({ where: { isFeatured: true } })
+  await db.book.findAll({ where: { isFeatured: true }, include: db.author })
     .then(books => { return res.status(200).json({ success: 1, books }) })
-    .catch(err => { return res.json({ success: 0, msg: 'Sorry! Something went wrong' }) })
+    .catch(err => { return res.status(500).json({ success: 0, msg: 'Sorry! Something went wrong' }) })
 }
 
 
