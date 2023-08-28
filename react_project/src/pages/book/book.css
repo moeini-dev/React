@@ -117,12 +117,14 @@
 .bookHeaderProperties {
     display: flex;
     flex-direction: column;
-    margin: 0 0 1vw 1vw;
+    margin: 0 0 1vw 3vw;
     gap: 5px;
 }
 
 .bookProperties {
     display: flex;
+    margin-top: 2vw;
+    gap: 1vw;
 }
 
 .bookHeaderProperties > h1 {
