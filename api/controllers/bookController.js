@@ -1,6 +1,8 @@
 const db = require('../models');
 const { Op } = require('sequelize');
 const axios = require('axios');
+const multer = require('multer');
+const path = require('path');
 
 const getBooks = async (req, res) => {
   if (req.query.title) {
@@ -14,6 +16,21 @@ const getBooks = async (req, res) => {
   }
   else if (req.query.translator) {
     getBooksByTranslator(req, res);
+  }
+  else if (req.query.limit) {
+    const limit = Number(req.query.limit);
+    if (limit > 10) return res.status(400);
+    await db.book.findAll({ limit: limit, include: db.author })
+      .then(books => {
+        res.status(200).json({
+          success: 1,
+          books
+        })
+      })
+      .catch(err => res.status(500).json({
+        success: 0,
+        msg: 'Sorry! Something went wrong'
+      }));
   }
   else {
     await db.book.findAll()
@@ -533,11 +550,25 @@ const updateBook = async (req, res) => {
 }
 
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // cb(null, 'images')
+    cb(null, './../react_project/public/images')
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.isbn + path.extname(file.originalname))
+  }
+})
+
+const upload = multer({ storage: storage }).single('image')
+
+
 module.exports = {
   getBooks,
   getOneBook,
   deleteBook,
   addBook,
   updateBook,
-  getFeaturedBooks
+  getFeaturedBooks,
+  upload,
 };

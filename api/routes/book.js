@@ -8,6 +8,6 @@ router.get('/featured', bookControllers.getFeaturedBooks)
 router.get('/:isbn', bookControllers.getOneBook);
 router.delete('/:isbn', authController.verify, bookControllers.deleteBook);
 router.put('/:isbn', authController.verify, bookControllers.updateBook);
-router.post('/', authController.verify, bookControllers.addBook);
+router.post('/addbook', authController.verify, bookControllers.upload, bookControllers.addBook);
 
 module.exports = router;
