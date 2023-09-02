@@ -13,6 +13,7 @@ import {
     createBrowserRouter,
     RouterProvider
 } from 'react-router-dom';
+import { AddBook } from './pages/addBook/AddBook';
 
 
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
     {
         path: '/book/:isbn',
         element: <Book />
+    },
+    {
+        path: 'book/addbook',
+        element: <AddBook />
     }
 
 ])
