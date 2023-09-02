@@ -5,6 +5,9 @@ require('dotenv').config();
 const db = require('./models');
 const bcrypt = require('bcrypt');
 app.use(express.json());
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 const userRoute = require('./routes/user');
 const bookRoute = require('./routes/book');
