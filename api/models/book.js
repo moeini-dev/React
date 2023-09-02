@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    image: {
+      type: DataTypes.STRING,
+      defaultValue: 'noImage.png'
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE
