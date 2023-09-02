@@ -1,6 +1,7 @@
 import './bookWindow.css';
 import { Item } from './../Item/Item';
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
 
 export function BookWindow() {
 
@@ -8,6 +9,21 @@ export function BookWindow() {
 
   const [slideNumber, setSlideNumber] = useState(0);
   const [xAxis, setXAxis] = useState(0);
+  const [books, setBooks] = useState({});
+
+
+  useEffect(() => {
+
+    axios.get('/book', {
+      params: {
+        limit: 8
+      }
+    })
+      .then(result => {
+        setBooks(result)
+      })
+      .catch(err => console.log('Error: ', err))
+  }, []);
 
   function handleClick(direction) {
 
@@ -41,59 +57,22 @@ export function BookWindow() {
           <svg className="arrowLeftIcon" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M561-240 320-481l241-241 43 43-198 198 198 198-43 43Z" /></svg>
         </div>
         <div className="windowItems" ref={listRef}>
-          <Item
-            link="google.com"
-            image="the-old-man-and-the-sea2.jpg"
-            name="The old man and the sea"
-            author="Ernest Hemigway" />
 
-          <Item
-            link="google.com"
-            image="1984.jpg"
-            name="1984"
-            author="George Orwell" />
+          {
+            (typeof books.data == 'undefined') ? (<div>Nothing</div>) :
+              (books.data.books.map(book => {
+                let authorData = book['author'];
+                if (authorData == null) { authorData = { firstName: 'No', lastName: ' Author' } }
+                return (
+                  <Item
+                    link={'/book/' + book.isbn}
+                    image={book.image}
+                    name={book.title}
+                    author={
+                      authorData['firstName'] + ' ' + authorData['lastName']} key={book.title} />);
+              }))
+          }
 
-          <Item
-            link="google.com"
-            image="the-midnight-library.jpg"
-            name="The Midnight Library"
-            author="Matt Haig" />
-
-          <Item
-            link="google.com"
-            image="the-old-man-and-the-sea2.jpg"
-            name="The old man and the sea"
-            author="Ernest Hemigway" />
-
-          <Item
-            link="google.com"
-            image="1984.jpg"
-            name="1984"
-            author="George Orwell" />
-
-          <Item
-            link="google.com"
-            image="the-midnight-library.jpg"
-            name="The Midnight Library"
-            author="Matt Haig" />
-
-          <Item
-            link="google.com"
-            image="the-old-man-and-the-sea2.jpg"
-            name="The old man and the sea"
-            author="Ernest Hemigway" />
-
-          <Item
-            link="google.com"
-            image="1984.jpg"
-            name="1984"
-            author="George Orwell" />
-
-          <Item
-            link="google.com"
-            image="the-midnight-library.jpg"
-            name="The Midnight Library"
-            author="Matt Haig" />
         </div>
         <div className="arrowRight" onClick={() => handleClick("right")}>
           <svg className="arrowRightIcon" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="m375-240-43-43 198-198-198-198 43-43 241 241-241 241Z" /></svg>

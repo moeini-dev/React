@@ -62,11 +62,10 @@ export function FeaturedBooks() {
                     {featuredBooks.data.books.map(book => {
 
                       const authorData = book['author'];
-
                       return (
                         <Item
-                          link="google.com"
-                          image="1984.jpg"
+                          link={'/book/' + book.isbn}
+                          image={book.image}
                           name={book.title}
                           author={
                             authorData['firstName'] + ' ' + authorData['lastName']} key={book.title} />
@@ -84,37 +83,3 @@ export function FeaturedBooks() {
     </div >
   );
 }
-
-// {<Item
-//                 link="google.com"
-//                 image={featuredBooks[0].id}
-//                 name={featuredBooks[0].title}
-//                 author={featuredBooks[0].author} />}
-//               {
-//                 <Item
-//                   link="google.com"
-//                   image={book.id}
-//                   name={book.title}
-//                   author={book.author} /> }
-
-//                   {featuredBooks.data.books.map(book => {
-//                     return (
-//                       <Item
-//                         link="google.com"
-//                         image="1984.jpg"
-//                         name={book.title}
-//                         author={book.author} key={book.title} />
-//                     )
-//                   })}
-
-//                   { <Item
-//                     link="google.com"
-//                     image="1984.jpg"
-//                     name="1984"
-//                     author="George Orwell" />
-
-//                   <Item
-//                     link="google.com"
-//                     image="the-midnight-library.jpg"
-//                     name="The Midnight Library"
-//                     author="Matt Haig" /> }
