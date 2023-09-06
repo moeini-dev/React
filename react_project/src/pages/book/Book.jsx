@@ -35,8 +35,8 @@ export function Book(props) {
           <div className="bookHeaderLeft">
             <div className="bookHeaderImage">
               {book ?
-                <img src={require(`./../../assets/${1984}.jpg`)} alt="" className="bookImage" /> :
-                <img src={require(`./../../assets/nothing.jpg`)} alt="" className="bookImage" />}
+                <img src={`http://localhost:3000/images/${book.image}`} alt="" className="bookImage" /> :
+                <img src={'http://localhost:3000/images/noImage.png'} alt="" className="bookImage" />}
             </div>
             <div className="bookHeaderProperties">
               {book ? <h1 className="bookTitle">{book.title}</h1> : 'Not found'}
