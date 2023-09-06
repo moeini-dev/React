@@ -8,10 +8,12 @@ import { Home } from './pages/home/Home';
 import { Login } from './pages/login/Login';
 import { Register } from './pages/register/Register';
 import { Book } from './pages/book/Book';
+import { SearchResults } from './pages/searchResults/SearchResult';
 
 import {
     createBrowserRouter,
-    RouterProvider
+    RouterProvider,
+    useHistory
 } from 'react-router-dom';
 import { AddBook } from './pages/addBook/AddBook';
 
@@ -37,6 +39,10 @@ const router = createBrowserRouter([
     {
         path: 'book/addbook',
         element: <AddBook />
+    },
+    {
+        path: '/searchresults',
+        element: <SearchResults />
     }
 
 ])
