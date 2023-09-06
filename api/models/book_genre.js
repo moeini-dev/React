@@ -1,8 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const Book_Genre = sequelize.define('book_genre', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
     bookIsbn: {
       type: DataTypes.BIGINT,
-      primaryKey: true,
+      primaryKey: false,
       references: {
         model: 'book',
         key: 'isbn'
@@ -10,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     genreId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
+      primaryKey: false,
       references: {
         model: 'genre',
         key: 'id'
@@ -20,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     freezeTableName: true
   });
+
+  Book_Genre.associate = models => {
+    Book_Genre.belongsTo(models.book, { foreignKey: 'bookIsbn', targetKey: 'isbn' });
+    Book_Genre.belongsTo(models.genre, { foreignKey: 'genreId', targetKey: 'id' })
+  }
 
   return Book_Genre;
 }
