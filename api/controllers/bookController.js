@@ -186,31 +186,38 @@ const getBooksByTranslator = async (req, res) => {
 
   if (translatorName[1]) {
     const results = await db.book.findAll({
-      include: {
-        model: db.translator,
-        where: {
-          [Op.and]: [
-            { firstName: translatorName[0] },
-            { lastName: translatorName[1] }
-          ]
-        }
-      }
+      include: [
+        { model: db.author },
+        {
+          model: db.translator,
+          where: {
+            [Op.and]: [
+              { firstName: translatorName[0] },
+              { lastName: translatorName[1] }
+            ]
+          }
+        }]
     })
       .then(results => getAssociatedBook(res, results, 'translator'))
   }
   else {
     const results = await db.book.findAll({
-      include: {
-        model: db.translator,
-        where: {
-          [Op.or]: [
-            { firstName: translatorName },
-            { lastName: translatorName }
-          ]
-        }
-      }
+      include: [
+        { model: db.author },
+        {
+          model: db.translator,
+          where: {
+            [Op.or]: [
+              { firstName: translatorName },
+              { lastName: translatorName }
+            ]
+          }
+        }]
     })
-      .then(results => getAssociatedBook(res, results, 'translator'))
+      .then(results => {
+        console.log(results)
+        getAssociatedBook(res, results, 'translator')
+      })
   }
 }
 
