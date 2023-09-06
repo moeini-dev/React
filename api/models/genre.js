@@ -1,5 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Genre = sequelize.define('genre', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
     genre: {
       type: DataTypes.STRING,
       allowNull: false,
