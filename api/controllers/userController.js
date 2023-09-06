@@ -43,28 +43,36 @@ const getUserByUuid = async (req, res) => {
 const createUser = async (req, res) => {
   let { username, password, email } = req.body;
 
-  password = await bcrypt.hash(password, 10);
+  const user = await db.user.findOne({ where: { username } });
 
-  await db.user.create({ username, password, email })
-    .then(result => {
-      res.status(200).json({
-        success: 1,
-        msg: 'User registerd successfully'
+  if (user === null) {
+    password = await bcrypt.hash(password, 10);
+    await db.user.create({ username, password, email })
+      .then(result => {
+        res.status(200).json({
+          success: 1,
+          msg: 'User registerd successfully'
+        })
       })
+      .catch(err => {
+        if (err.name == "SequelizeUniqueConstraintError") {
+          res.status(400).json({
+            success: 0,
+            error: err.errors[0].message
+          })
+        } else {
+          res.status(500).json({
+            success: 0,
+            msg: 'Sorry! Something went wrong'
+          })
+        }
+      })
+  } else {
+    res.status(400).json({
+      success: 0,
+      msg: 'This username already exists. Try another one'
     })
-    .catch(err => {
-      if (err.name == "SequelizeUniqueConstraintError") {
-        res.status(400).json({
-          success: 0,
-          error: err.errors[0].message
-        })
-      } else {
-        res.status(500).json({
-          success: 0,
-          msg: 'Sorry! Something went wrong'
-        })
-      }
-    })
+  }
 }
 
 
