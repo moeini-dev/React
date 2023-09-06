@@ -49,7 +49,7 @@ const getBooks = async (req, res) => {
 
 const getBooksByTitle = async (req, res) => {
   title = req.query.title;
-
+  console.log('==== Search by Title');
   //It allows to proceed to 'try' section only 
   // if the 'title' containts more than 2 letters
   // note the 'return' keyword
@@ -66,6 +66,7 @@ const getBooksByTitle = async (req, res) => {
           [Op.substring]: title
         }
       }
+      , include: { model: db.author }
     })
       .then(books => {
         if (books[0] !== undefined && books[0] !== null) {
@@ -95,16 +96,30 @@ const getBooksByTitle = async (req, res) => {
 
 
 const getBooksByPublisher = async (req, res) => {
+  const publisher = req.query.publisher;
+  console.log('==== Search by Publisher', publisher);
+
   await db.publisher.findAll({
     where: {
-      name: req.query.publisher
+      name: {
+        [Op.substring]: publisher
+      }
     },
-    include: db.book
+    include: {
+      model: db.book,
+      include: {
+        model: db.author
+      }
+    }
+
   })
     .then(results => {
       //In case that the publisher exists and have some books
       if (results[0].books && results[0].books.length !== 0) {
-        res.status(200).json(results[0].books);
+        res.status(200).json({
+          success: 1,
+          books: results[0].books
+        });
       } else {
         res.status(404).json({
           success: 0,
@@ -121,64 +136,79 @@ const getBooksByPublisher = async (req, res) => {
       }
       else res.status(500).json({
         success: 0,
-        msg: 'Sorry! Something went wrong'
+        msg: 'Sorry! Something went wrong',
+        err
       })
     })
 }
 
 
 const getBooksByAuthor = async (req, res) => {
-
+  console.log('==== Search by Author');
   const authorName = req.query.author.split(' ');
-
   if (authorName[1]) {
-    const results = await db.author.findAll({
-      where: {
-        [Op.and]: [
-          { firstName: authorName[0] },
-          { lastName: authorName[1] }
-        ]
-      }, include: db.book
+    const results = await db.book.findAll({
+      include: {
+        model: db.author,
+        where: {
+          [Op.and]: [
+            { firstName: authorName[0] },
+            { lastName: authorName[1] }
+          ]
+        }
+      }
     })
       .then(results => getAssociatedBook(res, results, 'author'))
   }
   else {
-    const results = await db.author.findAll({
-      where: {
-        [Op.or]: [
-          { firstName: authorName },
-          { lastName: authorName }
-        ]
-      }, include: db.book
+    const results = await db.book.findAll({
+      include: {
+        model: db.author,
+        where: {
+          [Op.or]: [
+            { firstName: authorName[0] },
+            { lastName: authorName[0] }
+          ]
+        }
+      }
     })
-      .then(results => getAssociatedBook(res, results, 'author'))
+      .then(results => {
+        //console.log(results[0]['author']['dataValues']);
+        getAssociatedBook(res, results, 'author')
+      })
   }
 }
 
 
 const getBooksByTranslator = async (req, res) => {
-
+  console.log('==== Search by Translator');
   const translatorName = req.query.translator.split(' ');
 
   if (translatorName[1]) {
-    const results = await db.translator.findAll({
-      where: {
-        [Op.and]: [
-          { firstName: translatorName[0] },
-          { lastName: translatorName[1] }
-        ]
-      }, include: db.book
+    const results = await db.book.findAll({
+      include: {
+        model: db.translator,
+        where: {
+          [Op.and]: [
+            { firstName: translatorName[0] },
+            { lastName: translatorName[1] }
+          ]
+        }
+      }
     })
       .then(results => getAssociatedBook(res, results, 'translator'))
   }
   else {
-    const results = await db.translator.findAll({
-      where: {
-        [Op.or]: [
-          { firstName: translatorName },
-          { lastName: translatorName }
-        ]
-      }, include: db.book
+    const results = await db.book.findAll({
+      include: {
+        model: db.translator,
+        where: {
+          [Op.or]: [
+            { firstName: translatorName },
+            { lastName: translatorName }
+          ]
+        }
+      }
     })
       .then(results => getAssociatedBook(res, results, 'translator'))
   }
@@ -189,8 +219,11 @@ const getBooksByTranslator = async (req, res) => {
 
 const getAssociatedBook = (res, results, person) => {
   try {
-    if (results[0].books && results[0].books.length !== 0) {
-      res.status(200).json(results[0].books);
+    if (results[0] && results[0].length !== 0) {
+      res.status(200).json({
+        success: 1,
+        books: results
+      });
     } else {
       res.status(404).json({
         success: 0,
@@ -570,5 +603,5 @@ module.exports = {
   addBook,
   updateBook,
   getFeaturedBooks,
-  upload,
+  upload
 };
