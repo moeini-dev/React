@@ -2,6 +2,7 @@ const db = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
+const cookieParser = require('cookie-parser');
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -15,7 +16,12 @@ const login = async (req, res) => {
 
           if (accessToken && refreshToken) {
             await db.user.update({ refreshToken }, { where: { email } })
-              .then(() => { return res.status(200).json({ success: 1, msg: 'Logged in successfully', accessToken, refreshToken }) })
+              .then(() => {
+                res.cookie('accessToken', accessToken, { httpOnly: true })
+                res.cookie('refreshToken', refreshToken, { httpOnly: true })
+                return res.status(200).json(accessToken)
+                // return res.status(200).json({ success: 1, msg: 'Logged in successfully', accessToken, refreshToken })
+              })
           } else { res.status(500).json({ success: 0, msg: 'Sorry! Something went wrong' }) }
 
         } else {
@@ -57,10 +63,13 @@ const generateRefreshToken = (user) => {
 
 
 const verify = async (req, res, next) => {
-  const authHeader = req.headers.authorization
-  if (authHeader) {
-    const token = authHeader.split(' ')[1];
+  // const authHeader = req.headers.authorization
+  // if (authHeader) {
+  //   const token = authHeader.split(' ')[1];
 
+  const token = req.cookies.accessToken;
+
+  if (token) {
     jwt.verify(token, process.env.SECRETKEY, (err, user) => {
       if (err) {
         return res.status(403).json({ success: 0, msg: 'Token is invalid' })
