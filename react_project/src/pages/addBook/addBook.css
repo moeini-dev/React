@@ -1,0 +1,120 @@
+.addBookForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+
+.mainForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    padding: 2vw 10vw 2vw 10vw;
+}
+
+.addBookForm > input{
+    display: flex;
+    height: 2vw;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.addBookForm > input:focus {
+    border: 2px solid rgb(14, 120, 241);
+    outline: none;
+}
+
+.checkboxDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.imageUpload {
+    display: none;
+}
+
+#imageUploadLabel {
+    display: flex;
+    justify-content: center;
+    border: 1px solid rgb(3, 173, 189);
+    border-radius: 5px;
+    padding: 0.5vw;
+}
+
+#imageUploadLabelSELECTED {
+    display: flex;
+    justify-content: center;
+    color: white;
+    background-color: rgb(3, 173, 189);
+    border-radius: 5px;
+    padding: 0.5vw;
+}
+
+
+.bookUpload {
+    display: none;
+}
+
+#bookFileUploadLabel {
+    display: flex;
+    justify-content: center;
+    border: 1px solid rgb(3, 173, 189);
+    border-radius: 5px;
+    padding: 0.5vw;
+}
+
+#bookFileUploadSELECTED{
+    display: flex;
+    justify-content: center;
+    color: white;
+    background-color: rgb(3, 173, 189);
+    border-radius: 5px;
+    padding: 0.5vw;
+}
+
+.addBook{ 
+    border: none;
+    border-radius: 5px;
+    padding: 0.5vw;
+    color: white;
+    background-color: rgb(50, 179, 125);
+}
+
+.errorMessage {
+    display: flex;
+    margin-bottom: 1vw;
+    padding: 0.5vw;
+    border-radius: 5px;
+    color: rgb(37, 37, 37);
+    background-color: rgb(255, 204, 204);
+}
+
+.successMessage {
+    display: flex;
+    margin-bottom: 1vw;
+    padding: 0.5vw;
+    border-radius: 5px;
+    color: rgb(37, 37, 37);
+    background-color: rgb(208, 255, 204);
+}
+
+.twinGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.twinGroup > input {
+    display: flex;
+    height: 2vw;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.twinGroup > input:focus {
+    border: 2px solid rgb(14, 120, 241);
+    outline: none;
+}
+
