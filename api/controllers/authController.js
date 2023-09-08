@@ -72,7 +72,7 @@ const verify = async (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.SECRETKEY, (err, user) => {
       if (err) {
-        return res.status(403).json({ success: 0, msg: 'Token is invalid' })
+        return res.status(403).json({ success: 0, msg: 'Token is invalid. You should login first' })
       } else {
         req.user = user;
         next();

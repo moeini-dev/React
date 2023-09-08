@@ -3,6 +3,8 @@ const { Op } = require('sequelize');
 const axios = require('axios');
 const multer = require('multer');
 const path = require('path');
+const { unlink } = require('node:fs/promises');
+const fs = require('fs');
 
 const getBooks = async (req, res) => {
   if (req.query.title) {
@@ -277,6 +279,7 @@ const deleteBook = async (req, res) => {
 
 
 const addBook = async (req, res) => {
+  console.log('==== ADD BOOK TRIGGERED ====')
   if (req.user.isAdmin == false) return res.status(403).json({ success: 0, msg: 'Admin privilege required' })
   const {
     isbn,
@@ -286,17 +289,22 @@ const addBook = async (req, res) => {
     authorName,
     publisherName,
     translatorName,
-    about
+    about,
+    isFeatured,
+    image
   } = req.body;
 
-  if (isbn == (undefined || null) || title == (undefined || null) || price == (undefined || null)) {
-    return res.status(500).json({
+  console.log('!!!!! ==== !!!!!')
+
+  if (isbn == (undefined || null || '') || title == (undefined || null || '') || price == (undefined || null || '')) {
+    return res.status(400).json({
       success: 0,
-      msg: 'Isbn, title, and price are required'
+      msg: 'ISBN, Author, Title, and Price are required'
     });
   }
   else {
-    const aboutText = (about ? about : 'No description')
+    const aboutText = (about ? about : 'No description');
+    const imageAddress = (image !== '' ? `${isbn}.jpg` : 'noImage.png');
 
     //This part needs to get refactored.
     //All of this indented ifs should turn into .then() chain, I think.
@@ -317,7 +325,9 @@ const addBook = async (req, res) => {
               authorId,
               publisherId,
               translatorId,
-              about: aboutText
+              about: aboutText,
+              isFeatured,
+              image: imageAddress
             })
               .then(result => res.status(200).json({
                 success: 1,
@@ -325,14 +335,15 @@ const addBook = async (req, res) => {
               }))
               .catch(err => {
                 if (err.name == 'SequelizeUniqueConstraintError') {
-                  res.status(200).json({
+                  res.status(400).json({
                     success: 0,
                     msg: `There is already a book with the same ISBN : ${isbn} Check if you entered ISBN correctly or maybe it has been added before`
                   })
                 } else {
-                  res.status(200).json({
+                  res.status(500).json({
                     success: 0,
-                    msg: `Sorry! Something went wrong`
+                    msg: `Sorry! Something went wrong`,
+                    err
                   })
                 }
               })
@@ -348,7 +359,9 @@ const addBook = async (req, res) => {
             publicationYear,
             authorId,
             publisherId,
-            about: aboutText
+            about: aboutText,
+            isFeatured,
+            image: imageAddress
           })
             .then(result => res.status(200).json({
               success: 1,
@@ -356,9 +369,9 @@ const addBook = async (req, res) => {
             }))
             .catch(err => {
               if (err.name == 'SequelizeUniqueConstraintError') {
-                res.status(200).json({
+                res.status(400).json({
                   success: 0,
-                  msg: `There is already a book with the same ISBN : ${isbn} Check if you entered ISBN correctly or maybe it has been added before`
+                  msg: `There is already a book with the same ISBN : ${isbn}`
                 })
               } else {
                 res.status(200).json({
@@ -399,7 +412,7 @@ const checkTranslator = async (res, translatorName) => {
   } else {
     res.status(400).json({
       success: 0,
-      msg: 'translator name should be a string'
+      msg: 'Enter the translator name as a string'
     })
   }
 }
@@ -442,7 +455,7 @@ const checkPublisher = async (res, publisherName) => {
   } else {
     res.status(400).json({
       success: 0,
-      msg: 'Publisher name should be a string'
+      msg: 'Enter the publisher name as a string'
     })
   }
 }
@@ -593,14 +606,23 @@ const updateBook = async (req, res) => {
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // cb(null, 'images')
-    cb(null, './../react_project/public/images')
+
+    console.log('===== Storage from multer =====\n')
+
+    if (file.fieldname === 'image') {
+      cb(null, path.join(__dirname, './../../react_project/public/images'))
+    } else {
+      cb(null, path.join(__dirname, './../../react_project/public/bookFiles'))
+    }
+
   },
   filename: (req, file, cb) => {
     cb(null, req.body.isbn + path.extname(file.originalname))
   }
 })
 
-const upload = multer({ storage: storage }).single('image')
+const upload = multer({ storage: storage }).fields([{ name: 'image' }, { name: 'bookFile' }])
+
 
 
 module.exports = {
