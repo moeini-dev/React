@@ -7,6 +7,9 @@ const bcrypt = require('bcrypt');
 app.use(express.json());
 const path = require('path');
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const userRoute = require('./routes/user');
