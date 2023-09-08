@@ -10,12 +10,14 @@ export function Register() {
 
   let userProfileData = {};
 
-  function handleSignUp() {
+  function handleSignUp(event) {
     userProfileData = {
       username: usernameRef.current.value,
       password: passwordRef.current.value,
       email: emailRef.current.value
     }
+    event.preventDefault();   //To prevent react from rerendering the page (refresh)
+    console.log('User profile: ', userProfileData);
   }
 
   return (
