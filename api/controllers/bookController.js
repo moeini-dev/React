@@ -3,8 +3,11 @@ const { Op } = require('sequelize');
 const axios = require('axios');
 const multer = require('multer');
 const path = require('path');
-const { unlink } = require('node:fs/promises');
+const { unlink } = require('node:fs');
 const fs = require('fs');
+
+let isImageDeleted = false;
+let isBookDeleted = false;
 
 const getBooks = async (req, res) => {
   if (req.query.title) {
@@ -580,26 +583,74 @@ const getFeaturedBooks = async (req, res) => {
 
 
 const updateBook = async (req, res) => {
+  console.log('---- req.body: ', req.body)
   if (req.user.isAdmin == false) return res.status(403).json({ success: 0, msg: 'Admin privilege required' })
   const {
+    isbn,
     title,
     price,
     publicationYear,
-    about
+    about,
+    authorName,
+    translatorName,
+    publisherName,
+    isFeatured
   } = req.body;
 
-  await db.book.update({
-    title,
-    price,
-    publicationYear,
-    about
-  },
-    { where: { isbn: req.params.isbn } })
-    .then(result => {
-      if (result == 1) return res.status(200).json({ success: 1, msg: 'Updated successfully' })
+  try {
+    const authorId = await checkAuthor(res, authorName);
+    const translatorId = await checkTranslator(res, translatorName);
+    const publisherId = await checkPublisher(res, publisherName);
+
+    // console.log('+++ Author, translator, publisher', authorId, translatorId, publisherId);
+
+    try {
+      const result = await db.book.update({
+        title,
+        price,
+        publicationYear: (publicationYear !== '' ? publicationYear : null),
+        about: (about !== '' ? about : null),
+        authorId,
+        translatorId,
+        publisherId,
+        isFeatured,
+        image: `${isbn}.jpg`
+      },
+        { where: { isbn: req.params.isbn } })
+
+
+      if (result == 1) {
+
+        return res.status(200).json({ success: 1, msg: 'Updated successfully' })
+      }
       return res.status(500).json({ success: 0, msg: 'Nothing updated. Make sure if this book exists' })
-    })
-    .catch(err => { return res.status(500).json({ success: 0, msg: 'Sorry! Something went wrong' }) })
+
+    } catch (err) {
+      // return res.status(500).json({ success: 0, msg: 'Sorry! Something went wrong' })
+      return res.status(500).json({ success: 0, msg: JSON.stringify(err) })
+
+    }
+
+  } catch { console.log('====== Error from update book catch') }
+
+
+
+
+  // await db.book.update({
+  //   title,
+  //   price,
+  //   publicationYear,
+  //   about
+  // },
+  //   { where: { isbn: req.params.isbn } })
+  //   .then(result => {
+  //     if (result == 1) {
+  //       console.log('~~~~~ UpdateBook successfully put ~~~~~')
+  //       return res.status(200).json({ success: 1, msg: 'Updated successfully' })
+  //     }
+  //     return res.status(500).json({ success: 0, msg: 'Nothing updated. Make sure if this book exists', result })
+  //   })
+  //   .catch(err => { return res.status(500).json({ success: 0, msg: 'Sorry! Something went wrong', err }) })
 }
 
 
@@ -609,10 +660,10 @@ const storage = multer.diskStorage({
 
     console.log('===== Storage from multer =====\n')
 
-    if (file.fieldname === 'image') {
-      cb(null, path.join(__dirname, './../../react_project/public/images'))
+    if (file.mimetype === 'image') {
+      return cb(null, path.join(__dirname, './../../react_project/public/images'))
     } else {
-      cb(null, path.join(__dirname, './../../react_project/public/bookFiles'))
+      return cb(null, path.join(__dirname, './../../react_project/public/bookFiles'))
     }
 
   },
@@ -625,6 +676,71 @@ const upload = multer({ storage: storage }).fields([{ name: 'image' }, { name: '
 
 
 
+const storageUpdate = multer.diskStorage({
+
+  destination: (req, file, cb) => {
+    // cb(null, 'images')
+
+    console.log('===== Storage ++ UPDATE ++ from multer =====\n')
+    console.log('File Field name: ', file.fieldname)
+    console.log('req.body.isbn: ', req.body.isbn)
+
+    try {
+      console.log('===== isImageDeleted: ', isImageDeleted);
+      console.log('===== isBookDeleted: ', isBookDeleted);
+
+      if (isImageDeleted === false) {
+        unlink(path.join(__dirname, `./../../react_project/public/images/${req.body.isbn}.jpg`))
+        console.log('++ Image deleted');
+        isImageDeleted = true;
+      }
+
+      if (isBookDeleted === false) {
+        unlink(path.join(__dirname, `./../../react_project/public/books/${req.body.isbn}.jpg`))
+        console.log('++ Book deleted');
+        isBookDeleted = true;
+      }
+
+      if (file.fieldname === 'imageUpdate') {
+        console.log('=== Image saved');
+        cb(null, path.join(__dirname, './../../react_project/public/images'))
+      } else {
+        console.log('=== Book saved');
+        cb(null, path.join(__dirname, './../../react_project/public/bookFiles'))
+      }
+
+    } catch{
+      console.log('---- There is no similar file. ADDING...')
+      if (isImageDeleted === false) {
+        if (file.fieldname === 'imageUpdate') {
+          console.log('=== Image saved from catch');
+          isImageDeleted = false;
+          cb(null, path.join(__dirname, './../../react_project/public/images'))
+        }
+      }
+
+      if (isBookDeleted === false) {
+        if (file.fieldname === 'bookFileUpdate') {
+          console.log('=== Book saved from catch');
+          isBookDeleted = false;
+          cb(null, path.join(__dirname, './../../react_project/public/bookFiles'))
+        }
+      }
+    }
+
+
+
+
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.isbn + path.extname(file.originalname))
+  }
+})
+
+const uploadUpdate = multer({ storage: storageUpdate }).fields([{ name: 'imageUpdate' }, { name: 'bookFileUpdate' }])
+
+
+
 module.exports = {
   getBooks,
   getOneBook,
@@ -632,5 +748,6 @@ module.exports = {
   addBook,
   updateBook,
   getFeaturedBooks,
-  upload
+  upload,
+  uploadUpdate
 };
