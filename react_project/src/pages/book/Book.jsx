@@ -6,8 +6,13 @@ import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../authContext/AuthContext";
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export function Book(props) {
+
+  const [bookDeleted, setBookDeleted] = useState(false);
+
+  const navigate = useNavigate();
 
   const { isbn } = useParams();
   const [book, setBook] = useState('');
@@ -22,7 +27,26 @@ export function Book(props) {
     } catch {
       setBook(null)
     }
+  }
 
+  const handleDeleteBook = async (event) => {
+    const confirmDelete = window.confirm('ATTENTION: Delete this book premanently?');
+    if (confirmDelete === true) {
+      try {
+        const response = await axios.delete(`/book/${isbn}`, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        document.querySelector('.deleteBook').style = 'color: white; background-color:darkgray;';
+        document.querySelector('.deleteBook').innerHTML = response.data.msg;
+        setBookDeleted(true);
+        setTimeout(() => {
+          navigate('/');
+        }, 4000)
+
+      } catch{ alert('Something went wrong. Login again!') }
+    }
   }
 
   useEffect(() => {
@@ -57,9 +81,12 @@ export function Book(props) {
                   {book && book.publisher && <p className="bookPublisherValue">{book.publisher.name}</p>}
                 </div>
               </div>
+
+              {bookDeleted ? <div className="bookDeleteMessage" style={{ 'color': 'rgb(25, 125, 143)', 'marginTop': '3vw' }}>Redirecting to Home Page ...</div> : <div></div>}
+
               {user?.user?.isAdmin ? <div className="adminFeatures">
                 <Link to={`/book/update/${book.isbn}`} state={book} className="editBook">Edit</Link>
-                <Link className="deleteBook">Delete</Link>
+                <button className="deleteBook" onClick={handleDeleteBook}>Delete</button>
               </div> : <div className="adminFeatures"></div>}
             </div>
           </div>
