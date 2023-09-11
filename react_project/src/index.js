@@ -16,6 +16,8 @@ import {
     useHistory
 } from 'react-router-dom';
 import { AddBook } from './pages/addBook/AddBook';
+import { UpdateBook } from './pages/updateBook/UpdateBook';
+import { AuthContextProvider } from './authContext/AuthContext';
 
 
 
@@ -41,6 +43,10 @@ const router = createBrowserRouter([
         element: <AddBook />
     },
     {
+        path: 'book/update/:isbn',
+        element: <UpdateBook />
+    },
+    {
         path: '/searchresults',
         element: <SearchResults />
     }
@@ -51,7 +57,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         {/* <App /> */}
-        <RouterProvider router={router} />
+        <AuthContextProvider>
+            <RouterProvider router={router} />
+        </AuthContextProvider>
     </React.StrictMode>
 );
 

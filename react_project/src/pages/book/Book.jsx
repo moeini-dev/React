@@ -3,11 +3,17 @@ import './book.css';
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../authContext/AuthContext";
+import { Link } from 'react-router-dom';
 
 export function Book(props) {
 
   const { isbn } = useParams();
   const [book, setBook] = useState('');
+  // const [isAdmin, setIsAdmin] = useState(true);
+
+  const { user } = useContext(AuthContext);
 
   const getBook = async () => {
     try {
@@ -51,12 +57,16 @@ export function Book(props) {
                   {book && book.publisher && <p className="bookPublisherValue">{book.publisher.name}</p>}
                 </div>
               </div>
+              {user?.user?.isAdmin ? <div className="adminFeatures">
+                <Link to={`/book/update/${book.isbn}`} state={book} className="editBook">Edit</Link>
+                <Link className="deleteBook">Delete</Link>
+              </div> : <div className="adminFeatures"></div>}
             </div>
           </div>
           <div className="bookHeaderRight">
             {book && <div className="price">$ {book.price}</div>}
-            <button className="goodreads">Check on Goodreads</button>
-            <button className="addToCart">Add to your cart</button>
+            {/* <button className="goodreads">Check on Goodreads</button> */}
+            <button className="addToCart">Buy</button>
           </div>
         </div>
         <div className="bookDescription">

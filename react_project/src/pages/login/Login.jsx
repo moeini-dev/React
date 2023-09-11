@@ -2,6 +2,9 @@ import './login.css';
 import { Navbar } from '../../components/Navbar/Navbar';
 import { useRef, useState } from 'react';
 import axios from 'axios';
+import { useContext } from 'react';
+import { AuthContext } from './../../authContext/AuthContext';
+import { login } from './../../authContext/apiCall';
 
 export function Login() {
   const passwordRef = useRef();
@@ -9,6 +12,9 @@ export function Login() {
 
   let userLoginData = {};
   let [loginError, setLoginError] = useState();
+
+  const { dispatch } = useContext(AuthContext);
+
 
   async function handleLogin(event) {
     userLoginData = {
@@ -18,18 +24,23 @@ export function Login() {
 
     event.preventDefault();
 
-    await axios.post('/auth/login',
-      userLoginData,
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    ).then(result => console.log(result.data.msg))
-      .catch(err => {
-        setLoginError(err.response.data.msg)
-        setTimeout(function () { setLoginError('') }, 3000)
-      })
+    const email = userLoginData.email;
+    const password = userLoginData.password;
+
+    login({ email, password }, dispatch);
+
+    // await axios.post('/auth/login',
+    //   userLoginData,
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     }
+    //   }
+    // ).then(result => console.log(result.data.msg))
+    //   .catch(err => {
+    //     setLoginError(err.response.data.msg)
+    //     setTimeout(function () { setLoginError('') }, 3000)
+    //   })
   }
 
   return (
