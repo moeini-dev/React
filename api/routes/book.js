@@ -7,7 +7,7 @@ router.get('/', bookControllers.getBooks);
 router.get('/featured', bookControllers.getFeaturedBooks)
 router.get('/:isbn', bookControllers.getOneBook);
 router.delete('/:isbn', authController.verify, bookControllers.deleteBook);
-router.put('/:isbn', authController.verify, bookControllers.updateBook);
+router.put('/:isbn', authController.verify, bookControllers.uploadUpdate, bookControllers.updateBook);
 router.post('/addbook', authController.verify, bookControllers.upload, bookControllers.addBook);
 
 module.exports = router;
