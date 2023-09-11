@@ -5,16 +5,24 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { AuthContext } from './../../authContext/AuthContext';
 import { login } from './../../authContext/apiCall';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export function Login() {
   const passwordRef = useRef();
   const emailRef = useRef();
 
+  const navigate = useNavigate();
+
   let userLoginData = {};
   let [loginError, setLoginError] = useState();
 
-  const { dispatch } = useContext(AuthContext);
+  const { user, error, dispatch } = useContext(AuthContext);
 
+  useEffect(() => {
+    setLoginError(error);
+    console.log('Error from useEffect: ', error)
+  }, [error])
 
   async function handleLogin(event) {
     userLoginData = {
@@ -28,6 +36,12 @@ export function Login() {
     const password = userLoginData.password;
 
     login({ email, password }, dispatch);
+
+    if (error == null) {
+      navigate('/')
+    }
+
+    // navigate('/');
 
     // await axios.post('/auth/login',
     //   userLoginData,
@@ -57,6 +71,9 @@ export function Login() {
             <button type="submit" name="submit" className="loginButton" onClick={handleLogin}>Login</button>
           </form>
         </div>
+
+        {/* <div>{JSON.stringify(error)}</div> */}
+
         {loginError && <div style={{ margin: '10px', color: 'rgba(255,0,0,0.5)' }}>{loginError}</div>}
       </div>
     </div>

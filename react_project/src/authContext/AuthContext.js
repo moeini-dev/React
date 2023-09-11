@@ -19,6 +19,7 @@ export const AuthContextProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user: state.user,
+        error: state.error,
         dispatch
       }}>
       {children}
