@@ -48,7 +48,7 @@ export function FeaturedBooks() {
         <div className="titleText">Top Books <br /><br />MAKE SUMMER SHINY</div>
         <div className="offPersentage">80% OFF</div>
       </div>
-      <div className="itemWrapper" style={{ 'margin-left': 40 }}>
+      <div className="itemWrapper" style={{ 'marginLeft': 40 }}>
         {(typeof featuredBooks == 'undefined') ? (
           <div>No featured Books</div>
         ) : (
@@ -68,7 +68,7 @@ export function FeaturedBooks() {
                           image={book.image}
                           name={book.title}
                           author={
-                            authorData['firstName'] + ' ' + authorData['lastName']} key={book.title} />
+                            authorData['firstName'] + ' ' + authorData['lastName']} key={book.isbn} />
                       )
                     })}
                   </div>

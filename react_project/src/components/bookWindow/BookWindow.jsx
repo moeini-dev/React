@@ -69,7 +69,7 @@ export function BookWindow() {
                     image={book.image}
                     name={book.title}
                     author={
-                      authorData['firstName'] + ' ' + authorData['lastName']} key={book.title} />);
+                      authorData['firstName'] + ' ' + authorData['lastName']} key={book.isbn} />);
               }))
           }
 
