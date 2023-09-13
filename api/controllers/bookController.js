@@ -740,6 +740,91 @@ const storageUpdate = multer.diskStorage({
 const uploadUpdate = multer({ storage: storageUpdate }).fields([{ name: 'imageUpdate' }, { name: 'bookFileUpdate' }])
 
 
+const checkForPayment = async (req) => {
+  try {
+    const user = await db.user.findOne({
+      where: { uuid: req.query.userUuid }
+    })
+
+    try {
+      const book = await db.book.findOne({
+        where: { isbn: req.query.bookIsbn }
+      })
+
+      console.log('========== checkForPayment triggered ==========')
+      return { user, book };
+
+    } catch (err) { return {} }
+  } catch (err) { return {} }
+
+}
+
+
+const addInitialOrder = async (req, res) => {
+  const data = await checkForPayment(req);
+  console.log(data.book.dataValues.isbn)
+
+  const order = await db.order.create({
+    userUuid: data.user.dataValues.uuid,
+    bookIsbn: data.book.dataValues.isbn,
+    status: 'pending',
+    amount: data.book.dataValues.price
+  })
+
+  return res.json(order)
+
+}
+
+
+const pay = async (req, res) => {
+  if (req.body.successStatus == true) {
+    try {
+      const finalOrder = await db.order.update({
+        status: 'succeed'
+      }, {
+        where: {
+          id: req.params.id
+        }
+      })
+
+      return res.json({ finalOrder });
+    } catch (err) { res.json(err) }
+  } else {
+    try {
+      const finalOrder = await db.order.update({
+        status: 'failed'
+      }, {
+        where: {
+          id: req.params.id
+        }
+      })
+
+      return res.json({ finalOrder })
+    } catch (err) { res.json({ err }) }
+  }
+}
+
+
+const checkUserBooks = async (req, res) => {
+  try {
+    const results = await db.order.findOne({
+      where: {
+        [Op.and]: [
+          { userUuid: req.query.userUuid },
+          { bookIsbn: req.query.bookIsbn },
+          { status: 'succeed' }
+        ]
+      }
+    })
+
+    return res.json(results)
+
+  } catch (err) {
+    console.log('========= Error from search orders', err)
+  }
+}
+
+
 
 module.exports = {
   getBooks,
@@ -749,5 +834,8 @@ module.exports = {
   updateBook,
   getFeaturedBooks,
   upload,
-  uploadUpdate
+  uploadUpdate,
+  addInitialOrder,
+  pay,
+  checkUserBooks
 };

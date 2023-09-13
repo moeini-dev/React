@@ -10,13 +10,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: [['completed', 'pending', 'cancled']]
+        isIn: [['succeed', 'pending', 'failed']]
       }
+    },
+    amount: {
+      type: DataTypes.FLOAT(5, 2),
+      allowNull: false
     }
   }, {
     freezeTableName: true,
     timestamps: true,
-    updatedAt: false
   });
 
   Order.associate = models => {
@@ -24,7 +27,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'bookIsbn',
       targetKey: 'isbn'
     });
-    Order.belongsTo(models.payment);
+    // Order.belongsTo(models.payment);
+    Order.belongsTo(models.user, {
+      foreignKey: 'userUuid',
+      targetKey: 'uuid'
+    })
   }
 
   return Order;

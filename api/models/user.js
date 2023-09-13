@@ -79,6 +79,10 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.payment);
     User.hasMany(models.review);
     User.belongsToMany(models.book, { through: 'User_Book', sourceKey: 'uuid', targetkey: 'isbn' });
+    User.hasMany(models.order, {
+      foreignKey: 'userUuid',
+      sourceKey: 'uuid'
+    });
   }
 
   return User;

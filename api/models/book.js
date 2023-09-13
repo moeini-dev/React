@@ -48,7 +48,10 @@ module.exports = (sequelize, DataTypes) => {
     Book.belongsTo(models.author);
     Book.belongsTo(models.publisher);
     Book.belongsTo(models.translator);
-    Book.hasMany(models.order);
+    Book.hasMany(models.order, {
+      foreignKey: 'bookIsbn',
+      sourceKey: 'isbn'
+    });
     Book.hasMany(models.review);
     Book.belongsToMany(models.user, { through: 'user_book', sourceKey: 'isbn', targetkey: 'uuid' });
     Book.belongsToMany(models.genre, { through: 'book_genre', sourceKey: 'isbn', targetKey: 'id' });

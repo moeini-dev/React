@@ -1,6 +1,6 @@
 import { Navbar } from "../../components/Navbar/Navbar";
 import './book.css';
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
@@ -12,11 +12,12 @@ export function Book(props) {
 
   const [bookDeleted, setBookDeleted] = useState(false);
 
+
   const navigate = useNavigate();
 
   const { isbn } = useParams();
   const [book, setBook] = useState('');
-  // const [isAdmin, setIsAdmin] = useState(true);
+  const [userOwnBook, setUserOwnBook] = useState(false);
 
   const { user } = useContext(AuthContext);
 
@@ -49,8 +50,31 @@ export function Book(props) {
     }
   }
 
+
+  const checkUserBooks = async () => {
+    try {
+      const result = await axios.get('/book/checkUserBooks', {
+        params: {
+          userUuid: user.user.uuid,
+          bookIsbn: isbn
+        }
+      })
+
+      console.log('Check user books: ', result.data);
+
+      if (result.data !== null) {
+        setUserOwnBook(true);
+      }
+
+    } catch (err) {
+      console.log('-- Error from check user book', err);
+    }
+  }
+
+
   useEffect(() => {
     getBook();
+    checkUserBooks();
   }, [])
 
   console.log(book)
@@ -93,7 +117,10 @@ export function Book(props) {
           <div className="bookHeaderRight">
             {book && <div className="price">$ {book.price}</div>}
             {/* <button className="goodreads">Check on Goodreads</button> */}
-            <button className="addToCart">Buy</button>
+            {userOwnBook == false ?
+              <Link to={`/book/addInitialOrder?bookIsbn=${isbn}&userUuid=${user.user.uuid}`} className="addToCart">Buy</Link> :
+              <Link to={'/'} className="readBook">Read</Link>
+            }
           </div>
         </div>
         <div className="bookDescription">

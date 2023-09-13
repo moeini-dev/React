@@ -1,0 +1,56 @@
+.payment {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.payment > input{
+    display: flex;
+    padding: 0.5vw;
+    margin: 1vw 0;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+
+
+.twinGroupPayment{
+    display: flex;
+    gap: 1vw;
+}
+
+.twinGroupPayment > input{
+    display: flex;
+    padding: 0.5vw;
+    margin: 1vw 0;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.Pay{
+    display: flex;
+    padding: 0.5vw 3vw;
+    color:white;
+    font-size: 16px;
+    background-color: rgb(39, 216, 133);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.Pay:hover{
+    background-color: rgb(26, 206, 122);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.transactionResultMessage{
+    display: flex;
+    padding: 1vw;
+    margin: 2vw 0;
+    color: rgb(71, 71, 71);
+    background-color: rgb(255, 203, 119);
+    border: none;
+    border-radius: 10px;
+}
