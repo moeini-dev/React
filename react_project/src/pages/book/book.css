@@ -80,7 +80,28 @@
 }
 
 .addToCart:hover {
+    color: white;
     background-color: rgb(20, 206, 212);
+    transition: 0.5s ease;
+}
+
+.readBook {
+    display: flex;
+    margin-top: 1em;
+    font-size: 18px;
+    width: fit-content;
+    color: white;
+    background-color: rgb(33, 187, 153);
+    border: none;
+    border-radius: 15px;
+    padding: 10px 45px;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.readBook:hover {
+    color: white;
+    background-color: rgb(20, 211, 169);
     transition: 0.5s ease;
 }
 
