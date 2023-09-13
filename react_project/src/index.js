@@ -10,6 +10,7 @@ import { Register } from './pages/register/Register';
 import { Book } from './pages/book/Book';
 import { SearchResults } from './pages/searchResults/SearchResult';
 
+
 import {
     createBrowserRouter,
     RouterProvider,
@@ -18,6 +19,7 @@ import {
 import { AddBook } from './pages/addBook/AddBook';
 import { UpdateBook } from './pages/updateBook/UpdateBook';
 import { AuthContextProvider } from './authContext/AuthContext';
+import { Payment } from './pages/payment/Payment';
 
 
 
@@ -49,18 +51,29 @@ const router = createBrowserRouter([
     {
         path: '/searchresults',
         element: <SearchResults />
+    },
+    {
+        path: 'book/addInitialOrder/',
+        element: <Payment />
     }
 
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        {/* <App /> */}
-        <AuthContextProvider>
-            <RouterProvider router={router} />
-        </AuthContextProvider>
-    </React.StrictMode>
+    // <React.StrictMode>
+    //     {/* <App /> */}
+    //     <AuthContextProvider>
+    //         <RouterProvider router={router} />
+    //     </AuthContextProvider>
+    // </React.StrictMode>
+
+
+
+    < AuthContextProvider >
+        <RouterProvider router={router} />
+    </AuthContextProvider >
+
 );
 
 // If you want to start measuring performance in your app, pass a function
