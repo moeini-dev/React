@@ -3,6 +3,9 @@ const router = express.Router();
 const bookControllers = require('../controllers/bookController');
 const authController = require('../controllers/authController');
 
+router.get('/addInitialOrder', bookControllers.addInitialOrder);
+router.get('/checkUserBooks', bookControllers.checkUserBooks);
+router.post('/pay/:id', bookControllers.pay);
 router.get('/', bookControllers.getBooks);
 router.get('/featured', bookControllers.getFeaturedBooks)
 router.get('/:isbn', bookControllers.getOneBook);
