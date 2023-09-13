@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Payment.associate = models => {
-    Payment.hasOne(models.order);
+    // Payment.hasOne(models.order);
     Payment.belongsTo(models.user, {
       foreignKey: 'userUuid',
       targetKey: 'uuid'
