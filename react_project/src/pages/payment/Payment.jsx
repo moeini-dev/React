@@ -35,7 +35,6 @@ export function Payment() {
       console.log('Results.data.id: ', results.data.id)
       setOrderUuid(results.data.id);
 
-
     } catch (err) {
       console.log('Error from axios: ', err)
     }
@@ -63,7 +62,6 @@ export function Payment() {
         setTimeout(() => {
           navigate('/');
         }, 5000)
-
 
       } catch (err) { console.log('===== Error from handlePayment: ', err); }
     }
