@@ -20,6 +20,7 @@ import { AddBook } from './pages/addBook/AddBook';
 import { UpdateBook } from './pages/updateBook/UpdateBook';
 import { AuthContextProvider } from './authContext/AuthContext';
 import { Payment } from './pages/payment/Payment';
+import { UserBooks } from './pages/userBooks/UserBooks';
 
 
 
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
     {
         path: 'book/addInitialOrder/',
         element: <Payment />
+    },
+    {
+        path: 'user/:uuid/books',
+        element: <UserBooks />
     }
 
 ])
