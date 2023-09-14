@@ -6,6 +6,7 @@ router.get('/', userControllers.getUsers);
 router.post('/', userControllers.createUser);
 router.get('/:uuid', userControllers.getUserByUuid);
 router.put('/:uuid', userControllers.editUser);
+router.get('/:uuid/books', userControllers.getUserBooks);
 
 
 module.exports = router;
