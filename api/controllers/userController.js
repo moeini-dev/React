@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const bcrypt = require('bcrypt');
+const { Op } = require('sequelize');
 
 const getUsers = async (req, res) => {
   await db.user.findAll()
@@ -58,12 +59,12 @@ const createUser = async (req, res) => {
         if (err.name == "SequelizeUniqueConstraintError") {
           res.status(400).json({
             success: 0,
-            error: err.errors[0].message
+            msg: err.errors[0].message
           })
         } else {
           res.status(500).json({
             success: 0,
-            msg: 'Sorry! Something went wrong'
+            msg: err.message
           })
         }
       })
@@ -119,9 +120,36 @@ const editUser = async (req, res) => {
 }
 
 
+const getUserBooks = async (req, res) => {
+
+  let books = [];
+
+  await db.order.findAll({
+    where: {
+      [Op.and]: [
+        { userUuid: req.params.uuid },
+        { status: 'succeed' }
+      ]
+    },
+    include: {
+      model: db.book
+    }
+  })
+    .then(results => {
+      console.log('===== results from Get user results: ', results[0])
+      results.map(result => {
+        books.push(result.book);
+      })
+      res.json(books);
+    })
+    .catch(err => console.log('----- Error from get user books: ', err))
+}
+
+
 module.exports = {
   getUsers,
   getUserByUuid,
   createUser,
-  editUser
+  editUser,
+  getUserBooks
 };
