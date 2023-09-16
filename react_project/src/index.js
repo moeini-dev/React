@@ -22,6 +22,7 @@ import { AuthContextProvider } from './authContext/AuthContext';
 import { Payment } from './pages/payment/Payment';
 import { UserBooks } from './pages/userBooks/UserBooks';
 import { Stats } from './pages/stats/Stats';
+import { BookContent } from './pages/bookContent/BookContent';
 
 
 
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
     {
         path: 'stats/',
         element: <Stats />
+    },
+    {
+        path: 'book/content/:isbn',
+        element: <BookContent />
     }
 
 ])
