@@ -21,6 +21,7 @@ import { UpdateBook } from './pages/updateBook/UpdateBook';
 import { AuthContextProvider } from './authContext/AuthContext';
 import { Payment } from './pages/payment/Payment';
 import { UserBooks } from './pages/userBooks/UserBooks';
+import { Stats } from './pages/stats/Stats';
 
 
 
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
     {
         path: 'user/:uuid/books',
         element: <UserBooks />
+    },
+    {
+        path: 'stats/',
+        element: <Stats />
     }
 
 ])
