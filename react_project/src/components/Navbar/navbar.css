@@ -91,6 +91,21 @@
     cursor: pointer;
 }
 
+.statistics {
+    display:flex;
+    padding: 0.5vw;
+    margin-right:  10px;
+    color: white;
+    background-color: rgb(93, 82, 238);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.statistics:hover {
+    color: white;
+}
+
 /* .userBooks:hover{
     display:flex;
     padding: 0.5vw;

@@ -34,6 +34,7 @@ export function Navbar() {
         {user?.user?.username ? <div className="userStuff">{user.user.username} Profile</div> : <div className="authNavigation"><Link to="/login" className="loginLink">Login</Link><Link to="/register" className="signInLink">Sign in</Link></div>}
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           {user?.user?.username && user?.user?.isAdmin == false ? <Link to={`/user/${user?.user?.uuid}/books`} className="userBooks">Your Books</Link> : <div></div>}
+          {user?.user?.username && user?.user?.isAdmin == true ? <Link to={'/stats'} className="statistics">Statistics</Link> : <div></div>}
           {user?.user?.username ? <button className="logout" onClick={handleLogout}>Logout</button> : <div></div>}
         </div>
 
