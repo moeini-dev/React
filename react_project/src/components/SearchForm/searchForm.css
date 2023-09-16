@@ -47,7 +47,7 @@ option{
     cursor: pointer;
 }
 
-svg {
+.searchIcon {
     width: 1.5em;
     height: 100%;
     fill: rgb(175, 175, 175);
