@@ -146,10 +146,31 @@ const getUserBooks = async (req, res) => {
 }
 
 
+const checkUserHasBook = async (req, res) => {
+  await db.order.findOne({
+    where: {
+      [Op.and]: [
+        { userUuid: req.query.userUuid },
+        { bookIsbn: req.query.bookIsbn },
+        { status: 'succeed' }
+      ]
+    }
+  })
+    .then(result => {
+      if (result == null) {
+        return res.json({ 'hasBook': false })
+      }
+      return res.json({ 'hasBook': true })
+    })
+    .catch(err => res.json(err))
+}
+
+
 module.exports = {
   getUsers,
   getUserByUuid,
   createUser,
   editUser,
-  getUserBooks
+  getUserBooks,
+  checkUserHasBook
 };

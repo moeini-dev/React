@@ -658,18 +658,72 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // cb(null, 'images')
 
-    console.log('===== Storage from multer =====\n')
+    console.log('===== Storage ++ UPDATE ++ from multer =====\n')
+    console.log('File Field name: ', file.fieldname)
+    console.log('req.body.isbn: ', req.body.isbn)
 
-    if (file.mimetype === 'image') {
-      return cb(null, path.join(__dirname, './../../react_project/public/images'))
-    } else {
-      return cb(null, path.join(__dirname, './../../react_project/public/bookFiles'))
+    try {
+      console.log('===== isImageDeleted: ', isImageDeleted);
+      console.log('===== isBookDeleted: ', isBookDeleted);
+
+      if (isImageDeleted === false) {
+        unlink(path.join(__dirname, `./../../react_project/public/images/${req.body.isbn}.jpg`))
+        console.log('++ Image deleted');
+        isImageDeleted = true;
+      }
+
+      if (isBookDeleted === false) {
+        unlink(path.join(__dirname, `./../../react_project/public/books/${req.body.isbn}.jpg`))
+        console.log('++ Book deleted');
+        isBookDeleted = true;
+      }
+
+      if (file.fieldname === 'imageUpdate') {
+        console.log('=== Image saved');
+        cb(null, path.join(__dirname, './../../react_project/public/images'))
+      } else {
+        console.log('=== Book saved');
+        cb(null, path.join(__dirname, './../../react_project/public/bookFiles'))
+      }
+
+    } catch{
+      console.log('---- There is no similar file. ADDING...')
+      if (isImageDeleted === false) {
+        if (file.fieldname === 'image') {
+          console.log('=== Image saved from catch');
+          isImageDeleted = false;
+          cb(null, path.join(__dirname, './../../react_project/public/images'))
+        }
+      }
+
+      if (isBookDeleted === false) {
+        if (file.fieldname === 'bookFile') {
+          console.log('=== Book saved from catch');
+          isBookDeleted = false;
+          cb(null, path.join(__dirname, './../../react_project/public/bookFiles'))
+        }
+      }
     }
 
   },
   filename: (req, file, cb) => {
     cb(null, req.body.isbn + path.extname(file.originalname))
   }
+  // destination: (req, file, cb) => {
+  //   // cb(null, 'images')
+
+  //   console.log('===== Storage from multer =====\n')
+
+  //   if (file.mimetype === 'image') {
+  //     return cb(null, path.join(__dirname, './../../react_project/public/images'))
+  //   } else {
+  //     return cb(null, path.join(__dirname, './../../react_project/public/bookFiles'))
+  //   }
+
+  // },
+  // filename: (req, file, cb) => {
+  //   cb(null, req.body.isbn + path.extname(file.originalname))
+  // }
 })
 
 const upload = multer({ storage: storage }).fields([{ name: 'image' }, { name: 'bookFile' }])
@@ -727,10 +781,6 @@ const storageUpdate = multer.diskStorage({
         }
       }
     }
-
-
-
-
   },
   filename: (req, file, cb) => {
     cb(null, req.body.isbn + path.extname(file.originalname))

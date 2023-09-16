@@ -85,6 +85,27 @@
     transition: 0.5s ease;
 }
 
+
+.loginAndBuy {
+    display: flex;
+    margin-top: 1em;
+    font-size: 18px;
+    width: fit-content;
+    color: white;
+    background-color: rgb(54, 136, 212);
+    border: none;
+    border-radius: 15px;
+    padding: 10px 30px;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.loginAndBuy:hover {
+    color: white;
+    background-color: rgb(32, 111, 185);
+    transition: 0.5s ease;
+}
+
 .readBook {
     display: flex;
     margin-top: 1em;

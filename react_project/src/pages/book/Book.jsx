@@ -74,7 +74,9 @@ export function Book(props) {
 
   useEffect(() => {
     getBook();
-    checkUserBooks();
+    if (user !== null) {
+      checkUserBooks();
+    }
   }, [])
 
   console.log(book)
@@ -89,7 +91,7 @@ export function Book(props) {
           <div className="bookHeaderLeft">
             <div className="bookHeaderImage">
               {book ?
-                <img src={`http://localhost:3000/images/${book.image}`} alt="" className="bookImage" /> :
+                <img style={{ borderRadius: 7 }} src={`http://localhost:3000/images/${book.image}`} alt="" className="bookImage" /> :
                 <img src={'http://localhost:3000/images/noImage.png'} alt="" className="bookImage" />}
             </div>
             <div className="bookHeaderProperties">
@@ -117,9 +119,9 @@ export function Book(props) {
           <div className="bookHeaderRight">
             {book && <div className="price">$ {book.price}</div>}
             {/* <button className="goodreads">Check on Goodreads</button> */}
-            {userOwnBook == false ?
-              <Link to={`/book/addInitialOrder?bookIsbn=${isbn}&userUuid=${user.user.uuid}`} className="addToCart">Buy</Link> :
-              <Link to={'/'} className="readBook">Read</Link>
+            {user !== null ? (userOwnBook == false ?
+              <Link to={`/book/addInitialOrder?bookIsbn=${isbn}&userUuid=${user?.user?.uuid}`} className="addToCart">Buy</Link> :
+              <Link to={`/book/content/${book.isbn}`} className="readBook" state={book}>Read</Link>) : <Link to={'/login'} className="loginAndBuy">Login and Buy</Link>
             }
           </div>
         </div>
