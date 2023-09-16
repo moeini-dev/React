@@ -55,7 +55,7 @@ export function FeaturedBooks() {
             <>
               <div className="featuredWindowContainer">
                 <div className="wapperWindow" style={{ overflow: 'hidden' }}>
-                  <div className="arrowLeft" onClick={() => handleClick("left")}>
+                  <div className="arrowLeft" style={{ zIndex: 80 }} onClick={() => handleClick("left")}>
                     <svg className="arrowLeftIcon" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M561-240 320-481l241-241 43 43-198 198 198 198-43 43Z" /></svg>
                   </div>
                   <div className="windowItems" ref={listRef}>

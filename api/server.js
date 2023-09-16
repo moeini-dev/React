@@ -15,10 +15,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 const userRoute = require('./routes/user');
 const bookRoute = require('./routes/book');
 const authRoute = require('./routes/auth');
+const statRoute = require('./routes/stats');
 
 app.use('/user', userRoute);
 app.use('/book', bookRoute);
 app.use('/auth', authRoute);
+app.use('/stats', statRoute);
 
 // app.get("/api/featuredBooks", (req, res) => {
 //     res.json(
