@@ -26,7 +26,10 @@ export function Navbar() {
   return (
     <>
       <div className="top">
-        <div className="logo">logo</div>
+        {/* <div className="logo">logo</div> */}
+        <Link to='/'>
+          <img className="logo" src={'http://localhost:3000/images/Logo.png'}></img>
+        </Link>
         <SearchForm />
       </div>
 
