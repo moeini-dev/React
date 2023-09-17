@@ -581,6 +581,18 @@ const getFeaturedBooks = async (req, res) => {
 }
 
 
+const getBooksByPrice = async (req, res) => {
+  await db.book.findAll({
+    where: {
+      price: {
+        [Op.lt]: 10
+      }
+    }
+  })
+    .then(books => { return res.json({ success: 1, books }) })
+    .catch(err => { return res.json({ success: 0, msg: 'Sorry! Something went wrong' }) })
+}
+
 
 const updateBook = async (req, res) => {
   console.log('---- req.body: ', req.body)
@@ -887,5 +899,6 @@ module.exports = {
   uploadUpdate,
   addInitialOrder,
   pay,
-  checkUserBooks
+  checkUserBooks,
+  getBooksByPrice
 };
