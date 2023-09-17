@@ -9,11 +9,25 @@ module.exports = {
         allowNull: false,
         defaultValue: DataTypes.UUIDV4
       },
+      userId: {
+        type: DataTypes.UUID,
+        references: {
+          model: 'user',
+          key: 'uuid'
+        }
+      },
+      bookIsbn: {
+        type: DataTypes.BIGINT,
+        references: {
+          model: 'book',
+          key: 'isbn'
+        }
+      },
       status: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isIn: [['completed', 'pending', 'cancled']]
+          isIn: [['succeed', 'pending', 'failed']]
         }
       },
       amount: {
@@ -27,7 +41,7 @@ module.exports = {
     }, {
       freezeTableName: true,
       timestamps: true,
-      updatedAt: false
+      updatedAt: true
     });
   },
   async down(queryInterface, DataTypes) {
