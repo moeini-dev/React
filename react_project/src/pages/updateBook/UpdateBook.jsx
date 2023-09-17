@@ -161,7 +161,7 @@ export function UpdateBook() {
               }
             }}></input>
           </div>
-          <button className="addBook" type="button" onClick={handleSubmit}>Add</button>
+          <button className="addBook" type="button" onClick={handleSubmit}>Save</button>
         </form>
       </div>
     </>

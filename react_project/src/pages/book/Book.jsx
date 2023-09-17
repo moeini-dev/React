@@ -101,10 +101,12 @@ export function Book(props) {
                   <p className="bookAuthorKey">Author:</p>
                   {book && book.translator && <p className="bookTranslatorKey">Translator:</p>}
                   {book && book.publisher && <p className="bookPublisherKey">Publisher:</p>}
+                  {book && book.publicationYear && <p className="bookPublicationYearKey">Publish Date:</p>}
                 </div>
                 <div className="bookPropertyValues">
                   {book && book.author ? <p className="bookAuthorValue">{book.author.firstName + ' ' + book.author.lastName}</p> : 'no body'}                  {book && book.translator && <p className="bookTranslatorValue">{book.translator.firstName + ' ' + book.translator.lastName}</p>}
                   {book && book.publisher && <p className="bookPublisherValue">{book.publisher.name}</p>}
+                  {book && book.publicationYear && <p className="bookPublisherValue">{book.publicationYear}</p>}
                 </div>
               </div>
 
