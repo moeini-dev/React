@@ -60,8 +60,8 @@ export function Payment() {
         setTransactionResult('Book payment done successfully!')
 
         setTimeout(() => {
-          navigate('/');
-        }, 5000)
+          navigate(`/book/${bookIsbn}`);
+        }, 3000)
 
       } catch (err) { console.log('===== Error from handlePayment: ', err); }
     }
@@ -79,8 +79,8 @@ export function Payment() {
 
         setTimeout(() => {
           setTransactionResult('');
-          navigate('/');
-        }, 5000)
+          navigate(`/book/${bookIsbn}`);
+        }, 3000)
 
       } catch (err) { console.log('===== Error from handlePayment 2: ', err); }
 
@@ -106,10 +106,10 @@ export function Payment() {
 
         {transactionResult !== '' ? (transactionResult == 'Book payment done successfully!' ? <>
           <div className="transactionResultMessage" style={{ backgroundColor: 'rgb(190, 255, 181)' }}>{transactionResult}</div>
-          <div style={{ color: 'rgb(55,55,55)' }}>Redirecting to Home page...</div>
+          <div style={{ color: 'rgb(55,55,55)' }}>Redirecting to the book page...</div>
         </> : <>
             <div className="transactionResultMessage">{transactionResult}</div>
-            <div style={{ color: 'rgb(55,55,55)' }}>Redirecting to Home page...</div>
+            <div style={{ color: 'rgb(55,55,55)' }}>Redirecting to the book page...</div>
           </>) : null}
 
 
