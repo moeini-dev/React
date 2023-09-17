@@ -129,5 +129,14 @@
     color: white;
 }
 
+.userProfileName{
+    color: rgb(80, 80, 80);
+    font-size: 18px;
+}
+
+.profileWrapper{
+    display: flex;
+    flex-direction: row;
+}
 
 
