@@ -24,7 +24,7 @@ const getBooks = async (req, res) => {
   }
   else if (req.query.limit) {
     const limit = Number(req.query.limit);
-    if (limit > 10) return res.status(400);
+    if (limit > 30) return res.status(400);
     await db.book.findAll({ limit: limit, include: db.author })
       .then(books => {
         res.status(200).json({

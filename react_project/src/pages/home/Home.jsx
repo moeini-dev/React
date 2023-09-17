@@ -4,6 +4,7 @@ import { FeaturedBooks } from '../../components/FeaturedBooks/FeaturedBooks';
 import { BookWindow } from '../../components/bookWindow/BookWindow';
 import { AuthContext } from '../../authContext/AuthContext';
 import { useContext } from 'react';
+import { StoreBookList } from '../../components/storeBookList/StoreBookList';
 
 export function Home() {
 
@@ -15,6 +16,7 @@ export function Home() {
       <div className="main">
         <FeaturedBooks />
         <BookWindow />
+        <StoreBookList></StoreBookList>
       </div>
       <div className="footer"></div>
     </div>

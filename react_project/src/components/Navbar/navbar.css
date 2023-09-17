@@ -17,6 +17,7 @@
 
 .logo {
     display: flex;
+    width: 70px;
     align-items: center;
     justify-content: left;
     margin-right: 40px;

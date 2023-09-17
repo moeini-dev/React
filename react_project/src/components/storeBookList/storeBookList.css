@@ -1,0 +1,24 @@
+.bookListContainer{ 
+    display: flex;
+    flex-direction: column;
+    padding-left: 1vw;  
+    margin: 2vw 9vw 6vw 9vw;
+    /* border: 1px solid rgb(204, 204, 204); */
+}
+
+
+.bookListTitle{
+    display: flex;
+    flex-direction: column;
+    margin: 2vw 0;
+    font-size: 22px;
+    font-weight: bold;
+    color:rgb(66, 66, 66);
+}
+
+.bookListItems{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+}

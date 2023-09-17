@@ -44,7 +44,14 @@ export function BookContent() {
         <ReactReader
           location={location}
           locationChanged={locationChanged}
-          url={`/bookFiles/${locationState?.state?.isbn}.epub`}
+
+          // url={`/bookFiles/${locationState?.state?.isbn}.epub`}
+
+          /** The line above is the proper way to show the right book
+           * but line bellow added just for demostration purposes
+           */
+          url={`/bookFiles/10101205.epub`}
+
         />
       </div> : <div className="main">You do not own this book. Buy it first!</div>}
     </>
