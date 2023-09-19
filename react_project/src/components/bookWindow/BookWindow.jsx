@@ -12,13 +12,19 @@ export function BookWindow() {
   const [books, setBooks] = useState({});
 
 
-  useEffect(() => {
+  const getBooksByPrice = async () => {
+    try {
+      const result = await axios.get('/book/getBooksByPrice');
+      setBooks(result);
+    } catch (err) {
+      console.log('Error: ', err)
+    }
+  }
 
-    axios.get('/book/getBooksByPrice')
-      .then(result => {
-        setBooks(result)
-      })
-      .catch(err => console.log('Error: ', err))
+
+  useEffect(() => {
+    getBooksByPrice();
+
   }, []);
 
   function handleClick(direction) {
@@ -57,15 +63,14 @@ export function BookWindow() {
           {
             (typeof books.data == 'undefined') ? (<div>Nothing</div>) :
               (books.data.books.map(book => {
-                let authorData = book['author'];
+                let authorData = book['author']['firstName'] + ' ' + book['author']['lastName'];
                 if (authorData == null) { authorData = { firstName: 'No', lastName: ' Author' } }
                 return (
                   <Item
                     link={'/book/' + book.isbn}
                     image={book.image}
                     name={book.title}
-                    author={
-                      authorData['firstName'] + ' ' + authorData['lastName']} key={book.isbn} />);
+                    author={authorData} key={book.isbn} />);
               }))
           }
 
