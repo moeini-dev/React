@@ -587,6 +587,9 @@ const getBooksByPrice = async (req, res) => {
       price: {
         [Op.lt]: 10
       }
+    },
+    include: {
+      model: db.author
     }
   })
     .then(books => { return res.json({ success: 1, books }) })
