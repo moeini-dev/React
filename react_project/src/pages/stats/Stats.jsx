@@ -21,6 +21,8 @@ export function Stats() {
   const [monthRevenueChart, setMonthRevenueChart] = useState('');
   const [yearRevenue, setYearRevenue] = useState('');
   const [yearRevenueChart, setYearRevenueChart] = useState('');
+  const [booksCount, setBooksCount] = useState('');
+  const [usersCount, setUsersCount] = useState('');
 
 
   const getStats = async () => {
@@ -37,6 +39,9 @@ export function Stats() {
       setMonthRevenueChart(stats.data.monthly_revenue);
       setYearRevenue(stats.data.yearly_revenue[stats.data.yearly_revenue.length - 1]['revenue']);
       setYearRevenueChart(stats.data.yearly_revenue);
+      setBooksCount(stats.data.books_count[0]['books_count']);
+      setUsersCount(stats.data.users_count[0]['users_count'])
+      console.log(stats.data.books_count[0]['books_count'])
       // console.log(yearlyOrders);
     } catch (err) {
       console.log(err)
@@ -67,6 +72,14 @@ export function Stats() {
                 <div className="statItems">
                   <div className="statItemsLabel">Year</div>
                   <div className="statItemsCount">{yearOrders}</div>
+                </div>
+                <div className="statItems">
+                  <div className="statItemsLabel">Books</div>
+                  <div className="statItemsCount">{booksCount}</div>
+                </div>
+                <div className="statItems">
+                  <div className="statItemsLabel">Users</div>
+                  <div className="statItemsCount">{usersCount}</div>
                 </div>
               </div>
               <div className="statsWrapper">

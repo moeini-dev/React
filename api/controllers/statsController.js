@@ -191,6 +191,27 @@ const getYearlyRevenue = async () => {
 }
 
 
+const getBooksCount = async () => {
+  let booksCount = [];
+  await db.book.count('isbn')
+    .then(result => booksCount.push({ books_count: result }))
+    .catch(err => console.log('===== Error: ', err))
+
+  return booksCount;
+}
+
+
+const getUsersCount = async () => {
+  let usersCount = [];
+  await db.user.count('isbn')
+    .then(result => usersCount.push({ users_count: result }))
+    .catch(err => console.log('===== Error: ', err))
+
+  return usersCount;
+}
+
+
+
 const getAllStats = async (req, res) => {
 
   const daily_orders_of_month = await getDailyOrdersOfMonth();
@@ -199,6 +220,8 @@ const getAllStats = async (req, res) => {
   const day_revenue = await getDaySumRevenue();
   const monthly_revenue = await getMonthlyRevenue();
   const yearly_revenue = await getYearlyRevenue();
+  const books_count = await getBooksCount();
+  const users_count = await getUsersCount();
 
   res.json({
     daily_orders_of_month,
@@ -206,7 +229,9 @@ const getAllStats = async (req, res) => {
     yearly_orders,
     day_revenue,
     monthly_revenue,
-    yearly_revenue
+    yearly_revenue,
+    books_count,
+    users_count
   })
 
 }
