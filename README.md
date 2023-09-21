@@ -23,7 +23,7 @@ The books are mostly assumed to be from the treasury of classic literature.
 <br/>
 
 ## Statistics
-![homepage](./Documentation/images/statsPage.png)
+![homepage](./Documentation/images/statisticsPage.png)
 
 <br/>
 
