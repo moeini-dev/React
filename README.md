@@ -78,4 +78,4 @@ This is a portfolio website made for selling ebooks with ePub format.
 
 ## Home Page
 
-![homepage](Documentation/test.gif)
+![homepage](https://github.com/moeini-dev/React/blob/iss2/Documentation/images/test.gif)
