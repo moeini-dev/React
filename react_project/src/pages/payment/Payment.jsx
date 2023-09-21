@@ -120,8 +120,8 @@ export function Payment() {
             <input type="text" name='expirationYear' className="expirationYear" placeholder="Year"></input>
           </div>
           <div className="twinGroupPayment">
-            <input type="text" name='cvv2' className="cvv2" placeholder="CVV2" readOnly={true}></input>
-            <input type="password" name='password' className="password" placeholder="Password" readOnly={true}></input>
+            <input type="text" name='cvv2' className="cvv2" placeholder="CVV2" ></input>
+            <input type="password" name='password' className="password" placeholder="Password" ></input>
           </div>
           <div className="checkboxDiv">
             <input type="checkbox" name='successOrFailure' id="successOrFailure" style={{ width: 15, marginRight: 10 }} onChange={() => { setSuccessStatus(!successStatus) }}></input>
