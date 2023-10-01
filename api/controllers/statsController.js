@@ -3,30 +3,30 @@ const sequelize = require('sequelize');
 const { Op } = require('sequelize');
 const moment = require('moment');
 
-const getDailyOrders = async () => {
+// const getDailyOrders = async () => {
 
-  console.log('===== Now: ', moment().toDate());
-  console.log('===== start of the month: ', moment().clone().startOf('month').toDate());
+//   console.log('===== Now: ', moment().toDate());
+//   console.log('===== start of the month: ', moment().clone().startOf('month').toDate());
 
-  try {
-    const daily_orders = await db.order.findAll({
-      where: {
-        createdAt: {
-          [Op.gte]: moment().clone().subtract(1, 'days').toDate()
-        }
+//   try {
+//     const daily_orders = await db.order.findAll({
+//       where: {
+//         createdAt: {
+//           [Op.gte]: moment().clone().subtract(1, 'days').toDate()
+//         }
 
-      },
-      attributes: {
-        exclude: ['userUuid', 'id', 'status', 'createdAt', 'updatedAt', 'amount', 'bookIsbn'],
-        include: [
-          [sequelize.fn('COUNT', sequelize.col('id')), 'daily_orders']
-        ]
-      }
-    })
+//       },
+//       attributes: {
+//         exclude: ['userUuid', 'id', 'status', 'createdAt', 'updatedAt', 'amount', 'bookIsbn'],
+//         include: [
+//           [sequelize.fn('COUNT', sequelize.col('id')), 'daily_orders']
+//         ]
+//       }
+//     })
 
-    return daily_orders[0];
-  } catch (err) { console.log('Error: ', err) }
-}
+//     return daily_orders[0];
+//   } catch (err) { console.log('Error: ', err) }
+// }
 
 
 
@@ -44,7 +44,8 @@ const getDailyOrdersOfMonth = async () => {
             { [Op.gte]: monthStart.clone().startOf('day') },
             { [Op.lte]: monthStart.clone().endOf('day') },
           ]
-        }
+        },
+        status: 'succeed'
       }
     })
       .then(result => {
@@ -74,7 +75,8 @@ const getMonthlyOrdersOfYear = async () => {
             { [Op.gte]: yearStart.clone().startOf('month') },
             { [Op.lte]: yearStart.clone().endOf('month') }
           ]
-        }
+        },
+        status: 'succeed'
       }
     })
       .then(result => {
@@ -102,7 +104,9 @@ const getYearlyOrders = async () => {
       where: {
         createdAt: {
           [Op.lte]: moment().clone().endOf('year').subtract(i, 'years')
-        }
+        },
+        status: 'succeed'
+
       }
     })
       .then(result => yearly_orders.push({ year: moment().clone().endOf('year').subtract(i, 'years').format('YYYY'), order: result }))
@@ -126,7 +130,9 @@ const getDaySumRevenue = async () => {
           { [Op.gte]: moment().clone().startOf('day') },
           { [Op.lte]: moment().clone().endOf('day') }
         ]
-      }
+      },
+      status: 'succeed'
+
     }
   })
     .then(result => {
@@ -152,7 +158,8 @@ const getMonthlyRevenue = async () => {
             { [Op.gte]: yearStart.clone().startOf('month') },
             { [Op.lte]: yearStart.clone().endOf('month') }
           ]
-        }
+        },
+        status: 'succeed'
       }
     })
       .then(result => {
@@ -180,7 +187,9 @@ const getYearlyRevenue = async () => {
       where: {
         createdAt: {
           [Op.lte]: moment().clone().endOf('year').subtract(i, 'years')
-        }
+        },
+        status: 'succeed'
+
       }
     })
       .then(result => yearly_revenue.push({ year: moment().clone().endOf('year').subtract(i, 'years').format('YYYY'), revenue: (result !== null ? result : 0) }))
