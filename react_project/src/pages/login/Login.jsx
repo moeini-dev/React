@@ -24,6 +24,12 @@ export function Login() {
     console.log('Error from useEffect: ', error)
   }, [error])
 
+  useEffect(() => {
+    if (user !== undefined && user !== null) {
+      navigate('/')
+    }
+  }, [user])
+
   async function handleLogin(event) {
     userLoginData = {
       email: emailRef.current.value,
@@ -36,25 +42,6 @@ export function Login() {
     const password = userLoginData.password;
 
     login({ email, password }, dispatch);
-
-    if (error == null) {
-      navigate('/')
-    }
-
-    // navigate('/');
-
-    // await axios.post('/auth/login',
-    //   userLoginData,
-    //   {
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }
-    //   }
-    // ).then(result => console.log(result.data.msg))
-    //   .catch(err => {
-    //     setLoginError(err.response.data.msg)
-    //     setTimeout(function () { setLoginError('') }, 3000)
-    //   })
   }
 
   return (
